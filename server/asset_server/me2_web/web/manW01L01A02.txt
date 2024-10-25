@@ -1,5 +1,5 @@
 [
-    #src: "W01L01A02Z01.w3d", 
+    #src: "W01L01BASE.w3d", 
     #lights: [
         "directionalLight_fill1",
         "directionalLight_fill2",
@@ -12,18 +12,126 @@
         #ROOT: "scene", 
         // Makes things visible to the camera
         #add: [
-            // "FLOORS_W01L01BASE"
+            // W01L01A02Z01.w3d models
+            "|A02Z01",
+            "WALLS_A02Z01",
+            "mountainCavern1",
+            "WALLS_A02Z01|mountainCavern2",
+            "WALLS_A02Z01|mountainCavern3",
+            "mountainCavern_bridge",
+            "WALLS_A02Z01|mountain_tunnelWalls_transition",
+            "WALLS_A02Z01|mountain_tunnelWalls_entrance",
+            "WALLS_A02Z01|mountainGrotto1",
+            "WALLS_A02Z01|mountainGrotto2",
+            "WALLS_A02Z01|mountain_tunnelWallsUnderwater_entrance",
+            "WALLS_A02Z01|mountainGrotto_tunnelWalls_entrance",
+            "WALLS_A02Z01|mountainGrotto_tunnelWallsUnderwater_entrance",
+            "TRIGGERS_A02Z01",
+            "checkpoint1_obstacleCourse_enterExit_trigger",
+            "checkpoint1_obstacleCourse_enterExit_triggerShape",
+            "scene",
+            "directionalLight_fill1",
+            "directionalLight_fill2",
+            "directionalLight_fill3",
+            "directionalLight_fill4",
+            "directionalLight_main",
+            "directionalLight_under"
+        ], 
+        #rem: [], 
+        #floors: [], 
+        #vfloors: [], 
+        #vfly: [], 
+        #walls: [
+            // W01L01A02Z01.w3d models
+            "WALLS_A02Z01",
+            "WALLS_A02Z01|mountainCavern2",
+            "WALLS_A02Z01|mountainCavern3",
+            "WALLS_A02Z01|mountain_tunnelWalls_transition",
+            "WALLS_A02Z01|mountain_tunnelWalls_entrance",
+            "WALLS_A02Z01|mountainGrotto1",
+            "WALLS_A02Z01|mountainGrotto2",
+            "WALLS_A02Z01|mountain_tunnelWallsUnderwater_entrance",
+            "WALLS_A02Z01|mountainGrotto_tunnelWalls_entrance",
+            "WALLS_A02Z01|mountainGrotto_tunnelWallsUnderwater_entrance"
+        ],
+        #walls_nc: [], 
+        #ext: [
+            "W01L01A02Z01.w3d",
+            "W01L01A02Z02.w3d"
+        ]
+    ],
+    #Z02: [
+        #ROOT: "scene", 
+        // Makes things visible to the camera
+        #add: [
+            // W01L01A02Z02.w3d models
+            "|A02Z02",
+            "WALLS_A02Z02",
+            "WALLS_A02Z02|mountain_tunnelWalls_entrance",
+            "WALLS_A02Z02|mountain_tunnelWallsUnderwater_entrance",
+            "WALLS_A02Z02|checkpoint2_racetrackWalls_entrance",
+            "WALLS_A02Z02|portal_walls",
+            "WALLS_NONCAMERA_A02Z02",
+            "WALLS_NONCAMERA_A02Z02|checkpoint2_racetrackWalls_entranceInfinityCheat",
+            "buoy_Boundary",
+            "buoy_BoundaryShape",
+            "WALLS_NONCAMERA_A02Z02|buoys",
+            "rampPark_sign1",
+            "rampPark_signpost1",
+            "rampPark_ropes1",
+            "RAMPPARK_A02Z02",
+            "WALLS_RAMPPARK_A02Z02",
+            "WALLS_RAMPPARK_A02Z02|miniJumps_rampWalls",
+            "WALLS_RAMPPARK_A02Z02|track_walls",
+            "WALLS_RAMPPARK_A02Z02|track_posts",
+            "INTAKEPIPE",
+            "INTAKEPIPE|pipes_1",
+            "fan_1",
+            "FLOORS_SLIP_RAMPPARK_A02Z02",
+            "FLOORS_SLIP_RAMPPARK_A02Z02|miniJumps_rampFloors",
+            "FLOORS_SLIP_RAMPPARK_A02Z02|track_ramps",
+            "NOTOUCH_RAMPPARK_A02Z02",
+            "ramppark_goalMarkers",
+            "ramppark_waterGrates",
+            "TRIGGERS_SCORING_RAMPPARK_A02Z02",
+            "miniJumps_triggers",
+            "miniJumps_triggersShape",
+            "scene",
+            "directionalLight_fill1",
+            "directionalLight_fill2",
+            "directionalLight_fill3",
+            "directionalLight_fill4",
+            "directionalLight_main",
+            "directionalLight_under"
         ], 
         #rem: [], 
         #floors: [
-            "FLOORS_W01L01BASE"
+            // W01L01A02Z02.w3d models
+            "FLOORS_SLIP_RAMPPARK_A02Z02",
+            "FLOORS_SLIP_RAMPPARK_A02Z02|miniJumps_rampFloors",
+            "FLOORS_SLIP_RAMPPARK_A02Z02|track_ramps"
         ], 
         #vfloors: [], 
         #vfly: [], 
         #walls: [
-            "WALLS_W01L01BASE"
+            // W01L01A02Z02.w3d models
+            "WALLS_A02Z02",
+            "WALLS_A02Z02|mountain_tunnelWalls_entrance",
+            "WALLS_A02Z02|mountain_tunnelWallsUnderwater_entrance",
+            "WALLS_A02Z02|checkpoint2_racetrackWalls_entrance",
+            "WALLS_A02Z02|portal_walls",
+            "WALLS_NONCAMERA_A02Z02",
+            "WALLS_NONCAMERA_A02Z02|checkpoint2_racetrackWalls_entranceInfinityCheat",
+            "WALLS_NONCAMERA_A02Z02|buoys",
+            "WALLS_RAMPPARK_A02Z02",
+            "WALLS_RAMPPARK_A02Z02|miniJumps_rampWalls",
+            "WALLS_RAMPPARK_A02Z02|track_walls",
+            "WALLS_RAMPPARK_A02Z02|track_posts"
         ], 
         #walls_nc: [], 
-        #ext: []
+        #ext: [
+            "W01L01A02Z01.w3d",
+            "W01L01A02Z02.w3d"
+        ]
     ]
 ]

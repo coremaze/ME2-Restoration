@@ -3,7 +3,7 @@
         [1,2,"L01A01",3,4,5],
         [
             // Area name (to be used for translation)
-            "zone1",
+            "level1area1",
 
             // nav (image?) source
             "navL01A01.jpg",
@@ -19,13 +19,23 @@
             // Gem something
             5
         ],
-        [1,2,"L01A03",3,4,5],
+        [
+            "level2area1",
+            "navL01A01.jpg",
+            "L02A01",
+            vector(0, 0, 0),
+            4,
+            5
+        ],
         [1,2,"L01A04",3,4,5],
         [1,2,"L01A05",3,4,5],
         [1,2,"L01A06",3,4,5]
     ],
     // Property name translations
-    #zone1: [
-        #en: ["Zone 1"]
+    #level1area1: [
+        #en: ["Level 1 Area 1"]
+    ],
+    #level2area1: [
+        #en: ["Level 2 Area 1"]
     ]
 ]
