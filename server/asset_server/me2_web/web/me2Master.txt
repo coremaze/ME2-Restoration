@@ -1,0 +1,31 @@
+[
+    #nav: [
+        [1,2,"L01A01",3,4,5],
+        [
+            // Area name (to be used for translation)
+            "zone1",
+
+            // nav (image?) source
+            "navL01A01.jpg",
+
+            // Nav Zone
+            "L01A02",
+
+            // Spawn position
+            vector(414, -74, 124),
+
+            4,
+
+            // Gem something
+            5
+        ],
+        [1,2,"L01A03",3,4,5],
+        [1,2,"L01A04",3,4,5],
+        [1,2,"L01A05",3,4,5],
+        [1,2,"L01A06",3,4,5]
+    ],
+    // Property name translations
+    #zone1: [
+        #en: ["Zone 1"]
+    ]
+]

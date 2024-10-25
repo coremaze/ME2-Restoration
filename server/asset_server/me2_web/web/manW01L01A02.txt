@@ -1,0 +1,29 @@
+[
+    #src: "W01L01A02Z01.w3d", 
+    #lights: [
+        "directionalLight_fill1",
+        "directionalLight_fill2",
+        "directionalLight_fill3",
+        "directionalLight_fill4",
+        "directionalLight_under",
+        "directionalLight_main"
+    ],
+    #Z01: [
+        #ROOT: "scene", 
+        // Makes things visible to the camera
+        #add: [
+            // "FLOORS_W01L01BASE"
+        ], 
+        #rem: [], 
+        #floors: [
+            "FLOORS_W01L01BASE"
+        ], 
+        #vfloors: [], 
+        #vfly: [], 
+        #walls: [
+            "WALLS_W01L01BASE"
+        ], 
+        #walls_nc: [], 
+        #ext: []
+    ]
+]

@@ -1,0 +1,72 @@
+[
+    #src: "W01L01BASE.w3d", 
+    #del: [],
+    #lights: [
+        "directionalLight_fill1",
+        "directionalLight_fill2",
+        "directionalLight_fill3",
+        "directionalLight_fill4",
+        "directionalLight_under",
+        "directionalLight_main"
+    ],
+    #zones: [
+        "W01L01A01Z01.w3d",
+        "W01L01A01Z02.w3d",
+        "W01L01A02Z01.w3d",
+        "W01L01A02Z02.w3d",
+        "W01L01A03Z01.w3d",
+        "W01L01A03Z02.w3d",
+        "W01L01A04Z01.w3d",
+        "W01L01A04Z02.w3d",
+        "W01L01A05Z01.w3d",
+        "W01L01A05Z02.w3d",
+        "W01L01A05Z03.w3d"
+    ],
+    #Z01: [
+        #ROOT: "scene", 
+        
+        // Makes things visible to the camera
+        #add: [
+            "W01L01BASE",
+            "FLOORS_W01L01BASE",
+            "grass", 
+            "beach",
+            "checkpoint2_walkways",
+            "underground_floors",
+            "rocks", 
+            "JETSKI_FLOORS_W01L01BASE",
+            "water",
+            "waterShape",
+            "ATV_FLOORS_W01L01BASE",
+            "checkpoint1_rampPark_startFinish_line",
+            "checkpoint2_roads",
+            "checkpoint2_roadCaveEntrance",
+            "checkpoint2_bumperbowl_startFinish_line",
+            "checkpoint2_bumperBowl",
+            "NO_WALK_W01L01BASE",
+            "landEdge",
+            "landEdge_underwater",
+            "underwaterFar",
+            "underwaterNear",
+            "forest",
+            "WALLS_W01L01BASE",
+            "sky",
+            "forest_filler",
+            "mountain1",
+            "mountain2",
+            "mountain3",
+            "mountainTowers"
+        ], 
+        #rem: [], 
+        #floors: [
+            "FLOORS_W01L01BASE"
+        ], 
+        #vfloors: [], 
+        #vfly: [], 
+        #walls: [
+            "WALLS_W01L01BASE"
+        ], 
+        #walls_nc: [], 
+        #ext: []
+    ]
+]

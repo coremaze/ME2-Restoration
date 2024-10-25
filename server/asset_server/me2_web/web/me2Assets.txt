@@ -1,0 +1,291 @@
+[
+    // Boy avatar
+    #ava1src: "ava1.w3d", 
+
+    // Girl avatar
+    #ava2src: "ava2.w3d", 
+
+    // Boy avatar customizations
+    #ava1cust: [
+        #base: "boy:ROOT-skeleton", 
+
+        // These are poBase shader indices (what? why?)
+        // 1: boy:skin_lambert_1
+        // 2: boy:skinface_lambert_1
+        // 3: boy:skin_lambert_1
+        // 4: boy:skin_lambert_1
+        // 5: boy:skin_lambert_1
+        // 6: boy:bottomspants_lambert_1
+        // 7: boy:shoessneaks_lambert_1
+        // 8: boy:shoessneaks_lambert_1
+        
+        #kc: 1, 
+        #fc: 2, 
+        #sc: 7, 
+
+        // Model lists
+        #h: [
+            "boy:ROOT_hair_parted-skeleton", 
+            "boy:ROOT_hair_caesar-skeleton", 
+            "boy:ROOT_hair_shag-skeleton", 
+            "boy:ROOT_hair_rock-skeleton", 
+            "boy:ROOT_hair_buzz-skeleton", 
+            "boy:ROOT_hair_afro-skeleton"
+        ], 
+        #t: [
+            "boy:ROOT_shirt_t-skeleton"
+        ], 
+        #b: [
+            "boy:ROOT_pants-skeleton", 
+            "boy:ROOT_shorts-skeleton"
+        ], 
+        #p: [
+            "boy:ROOT_backpack-skeleton"
+        ]
+    ], 
+    
+    // Girl avatar customizations
+    #ava2cust: [
+        #base: "girl:ROOT-skeleton", 
+
+        // what the fuck
+        // 1: girl:skinface_lambert_1
+        // 2: girl:skin_lambert_1
+        // 3: girl:skin_lambert_1
+        // 4: girl:skin_lambert_1
+        // 5: girl:bottoms_lambert_1
+        // 6: girl:shoes_lambert_1
+        // 7: girl:shoes_lambert_1
+
+        
+        #kc: 2, 
+        #fc: 1, 
+        #sc: 6, 
+        #h: [
+            "girl:ROOT_hair_ponytail-skeleton", 
+            "girl:ROOT_hair_pigtails-skeleton", 
+            "girl:ROOT_hair_straightShag-skeleton", 
+            "girl:ROOT_hair_straightLong-skeleton", 
+            "girl:ROOT_hair_wavyLong-skeleton", 
+            "girl:ROOT_hair_afro-skeleton"
+        ], 
+        #t: [
+            "girl:ROOT_shirt_t-skeleton", 
+            "girl:ROOT_shirt_summer-skeleton"
+        ], 
+        #b: [
+            "girl:ROOT_pants-skeleton", 
+            "girl:ROOT_shorts-skeleton"
+        ], 
+        #p: [
+            "girl:ROOT_shoulderbag-skeleton", 
+            "girl:ROOT_backpack-skeleton"
+        ]
+    ], 
+    #veh: [
+        #foot: [
+            #sr: 1, 
+            #ml: 1, 
+            #al: 1, 
+            #ax: 1, 
+            #fb: 1, 
+            #sb: 1, 
+            #bb: 1, 
+            #aa: 1, 
+            #sp: 10.0, 
+            #rv: 1, 
+            #ag: 1, 
+            #or: 1, 
+            #ss: 1, 
+            #in: 1, 
+            #bc: 1, 
+            #gv: -0.3, 
+            #tb: 1, 
+            #bh: 1, 
+            #sw: 1, 
+            #yw: 1, 
+            #pi: 1, 
+            #cs: 1, 
+            #at: 1, 
+            #tr: 1
+        ]
+    ],
+    #views: [
+        // Controls where the camera is
+        vector(
+            0, 
+            45, 
+            -180
+        ),
+        vector(
+            0, 
+            45, 
+            -180
+        )
+    ],
+
+    // tx = texture
+    // 1 = male, 2 = female
+    // k1 = skin, f1 = face, s1 = shoes, h<vHairValue> = hair, t/t1 = top, b<vBottomValue> = bottom, p<vPackValue> = pack
+    // next number = texture index corresponding to CM string
+
+    // I don't think there's a way to know which order these originally were in
+
+    // Boy skins
+    #tx1k11: "BoySkin_white_128.gif",
+    #tx1k12: "BoySkin_black_128.gif",
+    #tx1k13: "BoySkin_brown_128.gif",
+    #tx1k15: "BoySkin_pacific_128.gif",
+    #tx1k16: "BoySkin_pink_128.gif",
+
+
+    // Boy faces
+    #tx1f11: "BoyFace_white_Smile_128.gif",
+    #tx1f12: "BoyFace_black_Smile_128.gif",
+    #tx1f13: "BoyFace_brown_Smile_128.gif",
+    #tx1f15: "BoyFace_pacific_Smile_128.gif",
+    #tx1f16: "BoyFace_pink_Smile_128.gif",
+
+
+    // Boy shoes
+    // There are more versions of these textures?
+    #tx1s11: "BoyShoes_Sneaks_red_256.gif",
+    #tx1s12: "BoyShoes_Sneaks_beige_256.gif",
+    #tx1s13: "BoyShoes_Sneaks_black_256.gif",
+    #tx1s14: "BoyShoes_Sneaks_grey1b_128.gif",
+
+
+    // Boy hair, 1 = parted, 2 = Caesar
+    #tx1h11: "BoyHair_Parted_brown_128.gif",
+    #tx1h12: "BoyHair_Caesar_black_128.gif",
+    #tx1h13: "BoyHair_Caesar_blonde_128.gif",
+    #tx1h14: "BoyHair_Caesar_crims_128.gif",
+    #tx1h15: "BoyHair_Caesar_dirty_128.gif",
+    #tx1h16: "BoyHair_Caesar_red_128.gif",
+
+    #tx1h21: "BoyHair_Parted_brown_128.gif",
+    #tx1h22: "BoyHair_Parted_black_128.gif",
+    #tx1h23: "BoyHair_Parted_blonde_128.gif",
+    #tx1h24: "BoyHair_Parted_crims_128.gif",
+    #tx1h25: "BoyHair_Parted_dirty_128.gif",
+    #tx1h26: "BoyHair_Parted_red_128.gif",
+
+
+
+    // Boy top
+    #tx1t1: "BoyShirt_T_red_128.gif",
+    #tx1t11: "BoyShirt_T_red_128.gif",
+
+    #tx1t2: "BoyShirt_buttonT_plaid1_128.gif",
+    #tx1t12: "BoyShirt_buttonT_plaid1_128.gif",
+
+    #tx1t3: "BoyShirt_buttonT_plaid2_128.gif",
+    #tx1t13: "BoyShirt_buttonT_plaid2_128.gif",
+
+    #tx1t4: "BoyShirt_T_blue_128.gif",
+    #tx1t14: "BoyShirt_T_blue_128.gif",
+
+    #tx1t5: "BoyShirt_T_grey_128.gif",
+    #tx1t15: "BoyShirt_T_grey_128.gif",
+
+    #tx1t6: "BoyShirt_T_underBlue_128.gif",
+    #tx1t16: "BoyShirt_T_underBlue_128.gif",
+
+    #tx1t7: "BoyShirt_T_underGreen_128.gif",
+    #tx1t17: "BoyShirt_T_underGreen_128.gif",
+
+    #tx1t8: "BoyShirt_T_yellow_128.gif",
+    #tx1t18: "BoyShirt_T_yellow_128.gif",
+
+    #tx1t9: "BoyShirt_T_yellow_256.gif",
+    #tx1t19: "BoyShirt_T_yellow_256.gif",
+
+    // Boy bottom
+    #tx1b11: "BoyBottoms_Pants_jeans_128.gif",
+    #tx1b12: "BoyBottoms_Pants_cargo_128.gif",
+
+    // Boy pack
+    #tx1p11: "BoyBackpack_brown_128.gif",
+    #tx1p12: "BoyBackpack_red_128.gif",
+    #tx1p13: "BoyBackpack_black_128.gif",
+
+
+    // Girl skins
+    #tx2k11: "GirlSkin_white_128.gif",
+    #tx2k12: "GirlSkin_black_128.gif",
+    #tx2k13: "GirlSkin_brown_128.gif",
+    #tx2k14: "GirlSkin_pacific_128.gif",
+    #tx2k15: "GirlSkin_pink_128.gif",
+
+
+    // Girl faces
+    #tx2f11: "GirlFace_white_Smile_128.gif",
+    #tx2f12: "GirlFace_black_Smile_128.gif",
+    #tx2f13: "GirlFace_brown_Smile_128.gif",
+    #tx2f14: "GirlFace_pacific_Smile_128.gif",
+    #tx2f15: "GirlFace_pink_Smile_128.gif",
+
+
+    // Girl shoes
+    #tx2s11: "GirlShoes_Sneaks_black1a_128.gif",
+    #tx2s12: "GirlShoes_Sneaks_green1b_128.gif",
+    #tx2s13: "GirlShoes_Sneaks_grey1a_128.gif",
+    #tx2s14: "GirlShoes_Sneaks_pink1a_128.gif",
+    #tx2s15: "GirlShoes_Sneaks_white2a_128.gif",
+
+
+    // Girl hair
+    // 1 = pony, 2 = piggy
+    #tx2h11: "GirlHair_pony_black_128.gif",
+    #tx2h12: "GirlHair_pony_blonde_128.gif",
+    #tx2h13: "GirlHair_pony_brown_128.gif",
+    #tx2h14: "GirlHair_pony_crims_128.gif",
+    #tx2h15: "GirlHair_pony_dirty_128.gif",
+    #tx2h16: "GirlHair_pony_red_128.gif",
+
+    #tx2h21: "GirlHair_piggy_black_128.gif",
+    #tx2h22: "GirlHair_piggy_blonde_128.gif",
+    #tx2h23: "GirlHair_piggy_brown_128.gif",
+    #tx2h24: "GirlHair_piggy_crims_128.gif",
+    #tx2h25: "GirlHair_piggy_dirty_128.gif",
+    #tx2h26: "GirlHair_piggy_red_128.gif",
+
+    #tx2h31: "GirlHair_straight_black_128.gif",
+    #tx2h32: "GirlHair_straight_blonde_128.gif",
+    #tx2h33: "GirlHair_straight_brown_128.gif",
+    #tx2h34: "GirlHair_straight_crims_128.gif",
+    #tx2h35: "GirlHair_straight_dirty_128.gif",
+    #tx2h36: "GirlHair_straight_red_128.gif",
+
+    // Girl top
+    #tx2t1: "GirlShirt_Summer_black_128.gif",
+    #tx2t11: "GirlShirt_Summer_black_128.gif",
+    #tx2t2: "GirlShirt_Summer_lime_128.gif",
+    #tx2t12: "GirlShirt_Summer_lime_128.gif",
+    #tx2t3: "GirlShirt_Summer_pink_128.gif",
+    #tx2t13: "GirlShirt_Summer_pink_128.gif",
+    #tx2t4: "GirlShirt_Summer_white_128.gif",
+    #tx2t14: "GirlShirt_Summer_white_128.gif",
+    #tx2t5: "GirlShirt_Summer_yellow_128.gif",
+    #tx2t15: "GirlShirt_Summer_yellow_128.gif",
+    #tx2t6: "GirlShirt_T_black_128.gif",
+    #tx2t16: "GirlShirt_T_black_128.gif",
+    #tx2t7: "GirlShirt_T_lime_128.gif",
+    #tx2t17: "GirlShirt_T_lime_128.gif",
+    #tx2t8: "GirlShirt_T_pink_128.gif",
+    #tx2t18: "GirlShirt_T_pink_128.gif",
+    #tx2t9: "GirlShirt_T_white_128.gif",
+    #tx2t19: "GirlShirt_T_white_128.gif",
+    #tx2t10: "GirlShirt_T_yellow_128.gif",
+    #tx2t110: "GirlShirt_T_yellow_128.gif",
+
+    // Girl bottom
+    #tx2b11: "GirlBottoms_Pants_grey_128.gif",
+    #tx2b12: "GirlBottoms_Pants_jeans_128.gif",
+
+    // Girl pack
+    #tx2p11: "GirlShoulderbag_green_128.gif",
+    #tx2p12: "GirlShoulderbag_pink_128.gif",
+    #tx2p13: "GirlShoulderbag_white_128.gif"
+
+]

@@ -1,0 +1,14 @@
+[
+    #src: "W01L01A05Z01.w3d", 
+    #Z01: [
+        #ROOT: "scene", 
+        #add: [], 
+        #rem: [], 
+        #floors: [], 
+        #vfloors: [], 
+        #vfly: [], 
+        #walls: [], 
+        #walls_nc: [], 
+        #ext: []
+    ]
+]
