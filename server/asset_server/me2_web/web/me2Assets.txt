@@ -41,6 +41,102 @@
         ], 
         #p: [
             "boy:ROOT_backpack-skeleton"
+        ],
+        // hair style count is manually specified unlike the others
+        // These specify the color of each customization, by index. The color must be chosen to match the texture.
+        #hstyle: 6,
+        #hair: [
+            // black
+            "101010", 
+            // blonde
+            "AD8850", 
+            // brown
+            "68462E", 
+            // crims
+            "5E262F", 
+            // dirty
+            "74450B", 
+            // red
+            "AC3413"
+        ],
+        #skin: [
+            // white
+            "FAEDD7", 
+            // black
+            "744C3B", 
+            // brown
+            "C49A73", 
+            // pacific
+            "E3CBA0", 
+            // pink
+            "F7E2C0"
+        ],
+        #top: [
+            // Plaid 1
+            "7C7264",
+
+            // Plaid 2
+            "72766A",
+
+            // T-shirt Blue
+            "042A4C",
+
+            // T-shirt Grey
+            "344244",
+
+            // T-shirt Red
+            "9C1A0C",
+
+            // T-shirt underBlue
+            "6496A4",
+
+            // T-shirt underGreen
+            "75A69A",
+
+            // T-shirt Yellow
+            "E49A04"
+        ],
+        #bottom: [
+            // Cargo
+            "5F4E2A",
+
+            // Jeans
+            "1C3B53"
+        ],
+        #shoes: [
+            // Beige 1a
+            "AC9E84",
+
+            // Beige
+            "AD925A",
+
+            // Black 1a
+            "3C3A3C",
+
+            // Black
+            "151515",
+
+            // Brown 2b
+            "644E3C",
+
+            // Grey 1b
+            "848284",
+
+            // Red
+            "B82222",
+
+            // Red 2b
+            "A4463C"
+        ],
+        #pack: [
+            // Black
+            "131819",
+
+            // Brown
+            "3E2E1B",
+
+            // Red
+            "5C0C0C"
         ]
     ], 
     
@@ -80,7 +176,86 @@
         #p: [
             "girl:ROOT_shoulderbag-skeleton", 
             "girl:ROOT_backpack-skeleton"
+        ],
+        // hair style count is manually specified unlike the others
+        // These specify the color of each customization, by index. The color must be chosen to match the texture.
+        #hstyle: 6,
+        #hair: [
+            // black
+            "101010", 
+            // blonde
+            "AD8850", 
+            // brown
+            "68462E", 
+            // crims
+            "5E262F", 
+            // dirty
+            "74450B", 
+            // red
+            "AC3413"
+        ],
+        #skin: [
+            // white
+            "FAEDD7", 
+            // black
+            "744C3B", 
+            // brown
+            "C49A73", 
+            // pacific
+            "E3CBA0", 
+            // pink
+            "F7E2C0"
+        ],
+        #top: [
+            // Black
+            "25435B",
+
+            // Lime
+            "DDF495",
+
+            // Pink
+            "ED80B4",
+
+            // White
+            "F2FFFF",
+
+            // Yellow
+            "FFEF8F"
+        ],
+        #bottom: [
+            // Grey
+            "AAB6BC",
+
+            // Jeans
+            "207596"
+        ],
+        #shoes: [
+            // Black
+            "2C2E2C",
+
+            // Green
+            "9CDA7C",
+
+            // Grey
+            "848284",
+
+            // Pink
+            "FC82A4",
+
+            // White
+            "FCFEFC"
+        ],
+        #pack: [
+            // Green
+            "B6FABC",
+
+            // Pink
+            "E575B1",
+
+            // White - FFFFFF means invisible so it cannot be used
+            "FEFEFE"
         ]
+
     ], 
     #veh: [
         #foot: [
@@ -135,37 +310,42 @@
     #tx1k11: "BoySkin_white_128.gif",
     #tx1k12: "BoySkin_black_128.gif",
     #tx1k13: "BoySkin_brown_128.gif",
-    #tx1k15: "BoySkin_pacific_128.gif",
-    #tx1k16: "BoySkin_pink_128.gif",
+    #tx1k14: "BoySkin_pacific_128.gif",
+    #tx1k15: "BoySkin_pink_128.gif",
 
 
     // Boy faces
     #tx1f11: "BoyFace_white_Smile_128.gif",
     #tx1f12: "BoyFace_black_Smile_128.gif",
     #tx1f13: "BoyFace_brown_Smile_128.gif",
-    #tx1f15: "BoyFace_pacific_Smile_128.gif",
-    #tx1f16: "BoyFace_pink_Smile_128.gif",
+    #tx1f14: "BoyFace_pacific_Smile_128.gif",
+    #tx1f15: "BoyFace_pink_Smile_128.gif",
 
 
     // Boy shoes
     // There are more versions of these textures?
-    #tx1s11: "BoyShoes_Sneaks_red_256.gif",
+    #tx1s11: "BoyShoes_Sneaks_beige1a_128.gif",
     #tx1s12: "BoyShoes_Sneaks_beige_256.gif",
-    #tx1s13: "BoyShoes_Sneaks_black_256.gif",
-    #tx1s14: "BoyShoes_Sneaks_grey1b_128.gif",
+    #tx1s13: "BoyShoes_Sneaks_black1a_128.gif",
+    #tx1s14: "BoyShoes_Sneaks_black_256.gif",
+    #tx1s15: "BoyShoes_Sneaks_brown2b_128.gif",
+    #tx1s16: "BoyShoes_Sneaks_grey1b_128.gif",
+    #tx1s17: "BoyShoes_Sneaks_red_256.gif",
+    #tx1s18: "BoyShoes_Sneaks_red2b_128.gif",
+
 
 
     // Boy hair, 1 = parted, 2 = Caesar
-    #tx1h11: "BoyHair_Parted_brown_128.gif",
-    #tx1h12: "BoyHair_Caesar_black_128.gif",
-    #tx1h13: "BoyHair_Caesar_blonde_128.gif",
+    #tx1h11: "BoyHair_Caesar_black_128.gif",
+    #tx1h12: "BoyHair_Caesar_blonde_128.gif",
+    #tx1h13: "BoyHair_Parted_brown_128.gif",
     #tx1h14: "BoyHair_Caesar_crims_128.gif",
     #tx1h15: "BoyHair_Caesar_dirty_128.gif",
     #tx1h16: "BoyHair_Caesar_red_128.gif",
 
-    #tx1h21: "BoyHair_Parted_brown_128.gif",
-    #tx1h22: "BoyHair_Parted_black_128.gif",
-    #tx1h23: "BoyHair_Parted_blonde_128.gif",
+    #tx1h21: "BoyHair_Parted_black_128.gif",
+    #tx1h22: "BoyHair_Parted_blonde_128.gif",
+    #tx1h23: "BoyHair_Parted_brown_128.gif",
     #tx1h24: "BoyHair_Parted_crims_128.gif",
     #tx1h25: "BoyHair_Parted_dirty_128.gif",
     #tx1h26: "BoyHair_Parted_red_128.gif",
@@ -173,41 +353,26 @@
 
 
     // Boy top
-    #tx1t1: "BoyShirt_T_red_128.gif",
-    #tx1t11: "BoyShirt_T_red_128.gif",
-
-    #tx1t2: "BoyShirt_buttonT_plaid1_128.gif",
-    #tx1t12: "BoyShirt_buttonT_plaid1_128.gif",
-
-    #tx1t3: "BoyShirt_buttonT_plaid2_128.gif",
-    #tx1t13: "BoyShirt_buttonT_plaid2_128.gif",
-
-    #tx1t4: "BoyShirt_T_blue_128.gif",
-    #tx1t14: "BoyShirt_T_blue_128.gif",
-
-    #tx1t5: "BoyShirt_T_grey_128.gif",
-    #tx1t15: "BoyShirt_T_grey_128.gif",
-
-    #tx1t6: "BoyShirt_T_underBlue_128.gif",
+    #tx1t11: "BoyShirt_buttonT_plaid1_128.gif",
+    #tx1t12: "BoyShirt_buttonT_plaid2_128.gif",
+    #tx1t13: "BoyShirt_T_blue_128.gif",
+    #tx1t14: "BoyShirt_T_grey_128.gif",
+    #tx1t15: "BoyShirt_T_red_128.gif",
     #tx1t16: "BoyShirt_T_underBlue_128.gif",
-
-    #tx1t7: "BoyShirt_T_underGreen_128.gif",
     #tx1t17: "BoyShirt_T_underGreen_128.gif",
-
-    #tx1t8: "BoyShirt_T_yellow_128.gif",
     #tx1t18: "BoyShirt_T_yellow_128.gif",
 
-    #tx1t9: "BoyShirt_T_yellow_256.gif",
-    #tx1t19: "BoyShirt_T_yellow_256.gif",
 
     // Boy bottom
-    #tx1b11: "BoyBottoms_Pants_jeans_128.gif",
-    #tx1b12: "BoyBottoms_Pants_cargo_128.gif",
+    #tx1b11: "BoyBottoms_Pants_cargo_128.gif",
+    #tx1b12: "BoyBottoms_Pants_jeans_128.gif",
+    #tx1b21: "BoyBottoms_Pants_cargo_128.gif",
+    #tx1b22: "BoyBottoms_Pants_jeans_128.gif",
 
     // Boy pack
-    #tx1p11: "BoyBackpack_brown_128.gif",
-    #tx1p12: "BoyBackpack_red_128.gif",
-    #tx1p13: "BoyBackpack_black_128.gif",
+    #tx1p11: "BoyBackpack_black_128.gif",
+    #tx1p12: "BoyBackpack_brown_128.gif",
+    #tx1p13: "BoyBackpack_red_128.gif",
 
 
     // Girl skins
@@ -257,35 +422,34 @@
     #tx2h35: "GirlHair_straight_dirty_128.gif",
     #tx2h36: "GirlHair_straight_red_128.gif",
 
-    // Girl top
-    #tx2t1: "GirlShirt_Summer_black_128.gif",
-    #tx2t11: "GirlShirt_Summer_black_128.gif",
-    #tx2t2: "GirlShirt_Summer_lime_128.gif",
-    #tx2t12: "GirlShirt_Summer_lime_128.gif",
-    #tx2t3: "GirlShirt_Summer_pink_128.gif",
-    #tx2t13: "GirlShirt_Summer_pink_128.gif",
-    #tx2t4: "GirlShirt_Summer_white_128.gif",
-    #tx2t14: "GirlShirt_Summer_white_128.gif",
-    #tx2t5: "GirlShirt_Summer_yellow_128.gif",
-    #tx2t15: "GirlShirt_Summer_yellow_128.gif",
-    #tx2t6: "GirlShirt_T_black_128.gif",
-    #tx2t16: "GirlShirt_T_black_128.gif",
-    #tx2t7: "GirlShirt_T_lime_128.gif",
-    #tx2t17: "GirlShirt_T_lime_128.gif",
-    #tx2t8: "GirlShirt_T_pink_128.gif",
-    #tx2t18: "GirlShirt_T_pink_128.gif",
-    #tx2t9: "GirlShirt_T_white_128.gif",
-    #tx2t19: "GirlShirt_T_white_128.gif",
-    #tx2t10: "GirlShirt_T_yellow_128.gif",
-    #tx2t110: "GirlShirt_T_yellow_128.gif",
+    // Girl top - t1 = T-shirt, t2 = Summer
+    #tx2t11: "GirlShirt_T_black_128.gif",
+    #tx2t21: "GirlShirt_Summer_black_128.gif",
 
-    // Girl bottom
+    #tx2t12: "GirlShirt_T_lime_128.gif",
+    #tx2t22: "GirlShirt_Summer_lime_128.gif",
+
+    #tx2t13: "GirlShirt_T_pink_128.gif",
+    #tx2t23: "GirlShirt_Summer_pink_128.gif",
+
+    #tx2t14: "GirlShirt_T_white_128.gif",
+    #tx2t24: "GirlShirt_Summer_white_128.gif",
+
+    #tx2t15: "GirlShirt_T_yellow_128.gif",
+    #tx2t25: "GirlShirt_Summer_yellow_128.gif",
+
+    // Girl bottom, b1 = pants, b2 = shorts
     #tx2b11: "GirlBottoms_Pants_grey_128.gif",
     #tx2b12: "GirlBottoms_Pants_jeans_128.gif",
+    #tx2b21: "GirlBottoms_Pants_grey_128.gif",
+    #tx2b22: "GirlBottoms_Pants_jeans_128.gif",
 
-    // Girl pack
+    // Girl pack, p1 = shoulderbag, p2 = backpack
     #tx2p11: "GirlShoulderbag_green_128.gif",
     #tx2p12: "GirlShoulderbag_pink_128.gif",
-    #tx2p13: "GirlShoulderbag_white_128.gif"
+    #tx2p13: "GirlShoulderbag_white_128.gif",
 
+    #tx2p21: "GirlBackpack_green_128.gif",
+    #tx2p22: "GirlBackpack_pink_128.gif",
+    #tx2p23: "GirlBackpack_white_128.gif"
 ]
