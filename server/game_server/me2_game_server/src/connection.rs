@@ -3,7 +3,7 @@ use std::io::ErrorKind;
 use std::io::Read;
 use std::io::Write;
 use std::net::SocketAddr;
-use std::net::{TcpListener, TcpStream};
+use std::net::TcpStream;
 
 use crate::player::Player;
 
@@ -24,10 +24,8 @@ impl ConnectionID {
 pub struct Connection {
     stream: TcpStream,
     addr: SocketAddr,
-    buffer: Vec<u8>,
+    pub buffer: Vec<u8>,
 
-    pub state: ConnectionState,
-    pub current_packet_type: Option<String>,
     pub player: Option<Player>,
 }
 
@@ -40,39 +38,29 @@ impl Connection {
             stream,
             addr,
             buffer: Vec::new(),
-            state: ConnectionState::New,
             player: None,
-            current_packet_type: None,
         }
     }
 
-    pub fn recv(&mut self) -> Result<Option<String>, std::io::Error> {
+    pub fn recv(&mut self) -> std::io::Result<usize> {
         let mut buffer = [0; 512];
 
-        let read_result = self.stream.read(&mut buffer);
-
-        if let Ok(n) = read_result {
-            self.buffer.extend_from_slice(&buffer[..n]);
-        }
-
-        // Process complete packets terminated with \r
-        let carriage_return_pos = self.buffer.iter().position(|&x| x == b'\r');
-
-        if let Some(pos) = carriage_return_pos {
-            let packet = self.buffer.drain(..=pos).collect::<Vec<u8>>();
-            return Ok(Some(String::from_utf8_lossy(&packet[..pos]).to_string()));
-        }
-
-        if let Err(e) = read_result {
-            if e.kind() != ErrorKind::WouldBlock {
-                return Err(e);
+        match self.stream.read(&mut buffer) {
+            Ok(n) => {
+                self.buffer.extend_from_slice(&buffer[..n]);
+                Ok(n)
+            }
+            Err(e) => {
+                if e.kind() != ErrorKind::WouldBlock {
+                    return Err(e);
+                }
+                Ok(0)
             }
         }
-
-        Ok(None)
     }
 
     pub fn send(&mut self, message: &str) -> Result<(), std::io::Error> {
+        println!("Sending message: {}", message);
         self.stream.write_all(message.as_bytes())?;
         Ok(())
     }
@@ -105,12 +93,18 @@ impl Connections {
         self.connections.remove(&connection_id);
     }
 
-    pub fn get_connection(&self, connection_id: ConnectionID) -> Option<&Connection> {
-        self.connections.get(&connection_id)
+    pub fn get_connection(&self, connection_id: ConnectionID) -> &Connection {
+        self.connections.get(&connection_id).expect(&format!(
+            "get_connection was passed a non-existent ID: {}",
+            connection_id
+        ))
     }
 
-    pub fn get_connection_mut(&mut self, connection_id: ConnectionID) -> Option<&mut Connection> {
-        self.connections.get_mut(&connection_id)
+    pub fn get_connection_mut(&mut self, connection_id: ConnectionID) -> &mut Connection {
+        self.connections.get_mut(&connection_id).expect(&format!(
+            "get_connection_mut was passed a non-existent ID: {}",
+            connection_id
+        ))
     }
 
     pub fn iter(&self) -> std::collections::hash_map::Iter<'_, ConnectionID, Connection> {
@@ -122,12 +116,4 @@ impl Connections {
     ) -> std::collections::hash_map::IterMut<'_, ConnectionID, Connection> {
         self.connections.iter_mut()
     }
-}
-
-#[derive(Debug, PartialEq)]
-pub enum ConnectionState {
-    New,
-    Checked,
-    Authing,
-    Authenticated,
 }
