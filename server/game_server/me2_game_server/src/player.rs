@@ -6,6 +6,7 @@ pub struct Player {
 
     pub ingame: bool,
 
+    pub unsent_chats: Vec<(String, String)>,
     pub customization: String,
     pub location: (f32, f32, f32),
     pub rotation: (f32, f32, f32),
@@ -20,6 +21,7 @@ impl Player {
             avatar_id,
             display_name,
             ingame: false,
+            unsent_chats: Vec::new(),
             customization: String::from("241111112111111"),
             location: (0.0, 0.0, 0.0),
             rotation: (0.0, 0.0, 0.0),
