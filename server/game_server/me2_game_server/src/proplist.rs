@@ -57,10 +57,12 @@ impl Proplist {
         }
     }
 
+    /// Adds an element to the proplist.
     pub fn add_element(&mut self, key: &str, value: PropValue) {
         self.elements.insert(key.to_string(), value);
     }
 
+    /// Parses a proplist from a string.
     pub fn parse(input: &str) -> Result<Self, String> {
         let trimmed = input.trim();
         if !trimmed.starts_with('[') || !trimmed.ends_with(']') {
@@ -107,6 +109,63 @@ impl Proplist {
     /// Retrieves an element by its key.
     pub fn get_element(&self, key: &str) -> Option<&PropValue> {
         self.elements.get(key)
+    }
+
+    /// Retrieves an integer by its key.
+    pub fn get_integer(&self, key: &str) -> Option<i64> {
+        match self.get_element(key) {
+            Some(PropValue::Integer(i)) => Some(*i),
+            _ => None,
+        }
+    }
+
+    /// Retrieves a float by its key.
+    pub fn get_float(&self, key: &str) -> Option<f64> {
+        match self.get_element(key) {
+            Some(PropValue::Float(f)) => Some(*f),
+            _ => None,
+        }
+    }
+
+    /// Retrieves a vector by its key.
+    pub fn get_vector(&self, key: &str) -> Option<(f32, f32, f32)> {
+        match self.get_element(key) {
+            Some(PropValue::Vector(v)) => Some(*v),
+            _ => None,
+        }
+    }
+
+    /// Retrieves a string by its key.
+    pub fn get_string(&self, key: &str) -> Option<&str> {
+        match self.get_element(key) {
+            Some(PropValue::String(s)) => Some(s.as_str()),
+            _ => None,
+        }
+    }
+
+    /// Retrieves a list by its key.
+    pub fn get_list(&self, key: &str) -> Option<&Vec<PropValue>> {
+        match self.get_element(key) {
+            Some(PropValue::List(l)) => Some(l),
+            _ => None,
+        }
+    }
+
+    /// Retrieves a proplist by its key.
+    pub fn get_proplist(&self, key: &str) -> Option<&Proplist> {
+        match self.get_element(key) {
+            Some(PropValue::Proplist(p)) => Some(p),
+            _ => None,
+        }
+    }
+
+    /// Retrieves an integer or float value by its key.
+    pub fn get_number(&self, key: &str) -> Option<f64> {
+        match self.get_element(key) {
+            Some(PropValue::Integer(i)) => Some(*i as f64),
+            Some(PropValue::Float(f)) => Some(*f),
+            _ => None,
+        }
     }
 }
 

@@ -19,9 +19,9 @@ pub fn handle_uu(server: &mut Server, connection_id: ConnectionID, settings: &st
         return;
     };
 
-    if let Some(PropValue::String(customization)) = props.get_element("cm") {
+    if let Some(customization) = props.get_string("cm") {
         println!("Customization: {customization}");
-        player.customization = customization.clone();
+        player.customization = customization.to_string();
     }
 
     player.ingame = true;

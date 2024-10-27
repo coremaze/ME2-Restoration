@@ -20,24 +20,20 @@ pub fn handle_mu(server: &mut Server, connection_id: ConnectionID, data: &Mu) {
         return;
     };
 
-    if let Some(PropValue::Vector(location)) = movement_prop_list.get_element("l") {
-        player.location = *location;
+    if let Some(location) = movement_prop_list.get_vector("l") {
+        player.location = location;
     }
 
-    if let Some(PropValue::Vector(rotation)) = movement_prop_list.get_element("r") {
-        player.rotation = *rotation;
+    if let Some(rotation) = movement_prop_list.get_vector("r") {
+        player.rotation = rotation;
     }
 
-    if let Some(PropValue::String(animation_state)) = movement_prop_list.get_element("as") {
-        player.animation_state = animation_state.clone();
+    if let Some(animation_state) = movement_prop_list.get_string("as") {
+        player.animation_state = animation_state.to_string();
     }
 
-    if let Some(ar) = movement_prop_list.get_element("ar") {
-        match ar {
-            PropValue::Float(animation_rate) => player.animation_rate = *animation_rate as f32,
-            PropValue::Integer(animation_rate) => player.animation_rate = *animation_rate as f32,
-            _ => (),
-        }
+    if let Some(animation_rate) = movement_prop_list.get_number("ar") {
+        player.animation_rate = animation_rate as f32;
     }
 
     // println!("MU Movement packet received: {movement_prop_list:?}");
