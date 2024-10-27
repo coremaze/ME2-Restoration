@@ -74,5 +74,6 @@ fn inform_all_avatars(server: &mut Server, connection_id: ConnectionID) {
     for (avatar_id, display_name, customization) in av_id_name_custs {
         send_avatar(connection, avatar_id.into(), &display_name, &customization);
     }
-    connection.send(&movement_propvaluelist.to_string()).ok();
+    let movement_packet = format!("{}\r", movement_propvaluelist.to_string());
+    connection.send(&movement_packet).ok();
 }

@@ -4,7 +4,20 @@ use crate::{connection::ConnectionID, packet::client_packet::Ct, server::Server}
 pub fn handle_ct(server: &mut Server, connection_id: ConnectionID, data: &Ct) {
     // println!("Chat message: {:#?}", data);
 
-    if data.target.is_empty() {
+    // The client checks this in two different ways
+    if data.target == "GET" || (data.chat.is_empty() && data.target.is_empty()) {
+        let connection = server.connections.get_connection_mut(connection_id);
+        let Some(player) = &mut connection.player else {
+            return;
+        };
+        let chats = player.unsent_chats.clone();
+        player.unsent_chats.clear();
+
+        for (username, chat) in chats {
+            // println!("Sending chat from {username}: {chat}");
+            send_chat(connection, &username, &chat);
+        }
+    } else if data.target.is_empty() {
         let username = {
             let connection = server.connections.get_connection(connection_id);
             let Some(player) = &connection.player else {
@@ -20,17 +33,5 @@ pub fn handle_ct(server: &mut Server, connection_id: ConnectionID, data: &Ct) {
             }
         }
         println!("[Chat] {username}: {}", data.chat);
-    } else if data.target == "GET" {
-        let connection = server.connections.get_connection_mut(connection_id);
-        let Some(player) = &mut connection.player else {
-            return;
-        };
-        let chats = player.unsent_chats.clone();
-        player.unsent_chats.clear();
-
-        for (username, chat) in chats {
-            // println!("Sending chat from {username}: {chat}");
-            send_chat(connection, &username, &chat);
-        }
     }
 }
