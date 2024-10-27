@@ -1,4 +1,3 @@
-mod avatar;
 mod connection;
 mod packet;
 mod packet_handler;

@@ -16,7 +16,7 @@ impl std::fmt::Display for ConnectionID {
 }
 
 impl ConnectionID {
-    pub fn to_num(&self) -> u64 {
+    pub fn to_num(self) -> u64 {
         self.0
     }
 }
@@ -24,6 +24,7 @@ impl ConnectionID {
 pub struct Connection {
     stream: TcpStream,
     addr: SocketAddr,
+    killed: bool,
     pub buffer: Vec<u8>,
 
     pub player: Option<Player>,
@@ -37,6 +38,7 @@ impl Connection {
         Connection {
             stream,
             addr,
+            killed: false,
             buffer: Vec::new(),
             player: None,
         }
@@ -60,9 +62,22 @@ impl Connection {
     }
 
     pub fn send(&mut self, message: &str) -> Result<(), std::io::Error> {
-        println!("Sending message: {}", message);
+        // println!("Sending message: {}", message);
         self.stream.write_all(message.as_bytes())?;
         Ok(())
+    }
+
+    pub fn kill(&mut self) {
+        self.stream.shutdown(std::net::Shutdown::Both).ok();
+        self.killed = true;
+    }
+
+    pub fn is_killed(&self) -> bool {
+        self.killed
+    }
+
+    pub fn addr(&self) -> SocketAddr {
+        self.addr
     }
 }
 
@@ -94,17 +109,21 @@ impl Connections {
     }
 
     pub fn get_connection(&self, connection_id: ConnectionID) -> &Connection {
-        self.connections.get(&connection_id).expect(&format!(
-            "get_connection was passed a non-existent ID: {}",
-            connection_id
-        ))
+        self.connections.get(&connection_id).unwrap_or_else(|| {
+            panic!(
+                "get_connection was passed a non-existent ID: {}",
+                connection_id
+            )
+        })
     }
 
     pub fn get_connection_mut(&mut self, connection_id: ConnectionID) -> &mut Connection {
-        self.connections.get_mut(&connection_id).expect(&format!(
-            "get_connection_mut was passed a non-existent ID: {}",
-            connection_id
-        ))
+        self.connections.get_mut(&connection_id).unwrap_or_else(|| {
+            panic!(
+                "get_connection_mut was passed a non-existent ID: {}",
+                connection_id
+            )
+        })
     }
 
     pub fn iter(&self) -> std::collections::hash_map::Iter<'_, ConnectionID, Connection> {
@@ -115,5 +134,10 @@ impl Connections {
         &mut self,
     ) -> std::collections::hash_map::IterMut<'_, ConnectionID, Connection> {
         self.connections.iter_mut()
+    }
+
+    pub fn remove_dead(&mut self) {
+        self.connections
+            .retain(|_, connection| !connection.is_killed());
     }
 }

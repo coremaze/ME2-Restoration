@@ -12,9 +12,9 @@ pub enum PropValue {
     Void,
 }
 
-impl ToString for PropValue {
-    fn to_string(&self) -> String {
-        match self {
+impl std::fmt::Display for PropValue {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let s = match self {
             PropValue::Integer(i) => i.to_string(),
             PropValue::Float(f) => f.to_string(),
             PropValue::Vector(v) => format!("vector({},{},{})", v.0, v.1, v.2),
@@ -28,7 +28,8 @@ impl ToString for PropValue {
             ),
             PropValue::Proplist(p) => p.to_string(),
             PropValue::Void => "".to_string(),
-        }
+        };
+        write!(f, "{}", s)
     }
 }
 
@@ -37,15 +38,15 @@ pub struct Proplist {
     pub elements: HashMap<String, PropValue>,
 }
 
-impl ToString for Proplist {
-    fn to_string(&self) -> String {
+impl std::fmt::Display for Proplist {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let elements_str = self
             .elements
             .iter()
-            .map(|(k, v)| format!("#{}:{}", k, v.to_string()))
+            .map(|(k, v)| format!("#{}:{}", k, v))
             .collect::<Vec<String>>()
             .join(",");
-        format!("[{}]", elements_str)
+        write!(f, "[{}]", elements_str)
     }
 }
 
@@ -66,13 +67,16 @@ impl Proplist {
             return Err("Proplist must start with '[' and end with ']'".to_string());
         }
 
-        let content = &trimmed[1..trimmed.len() - 1];
+        let end = trimmed.len().saturating_sub(1);
+        let content = trimmed
+            .get(1..end)
+            .ok_or("Proplist must start with '[' and end with ']'")?;
         let elements_vec = split_elements(content)?;
 
         let mut elements = HashMap::new();
         for item in elements_vec {
             let parts: Vec<&str> = item.splitn(2, ':').collect();
-            let key = if parts.len() >= 1 {
+            let key = if !parts.is_empty() {
                 parts[0].trim()
             } else {
                 return Err(format!("Invalid element: {}", item));
@@ -109,20 +113,20 @@ impl Proplist {
 fn split_elements(s: &str) -> Result<Vec<String>, String> {
     let mut elements = Vec::new();
     let mut current = String::new();
-    let mut depth = 0;
-    let mut chars = s.chars().peekable();
+    let mut depth: u32 = 0;
+    let chars = s.chars().peekable();
 
-    while let Some(c) = chars.next() {
+    for c in chars {
         match c {
             '[' | '(' => {
-                depth += 1;
+                depth = depth.checked_add(1).ok_or("Depth overflow")?;
                 current.push(c);
             }
             ']' | ')' => {
                 if depth == 0 {
                     return Err(format!("Unmatched closing '{}'", c));
                 }
-                depth -= 1;
+                depth = depth.checked_sub(1).ok_or("Depth underflow")?;
                 current.push(c);
             }
             ',' if depth == 0 => {
@@ -150,8 +154,9 @@ impl FromStr for PropValue {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let s_end = s.len().saturating_sub(1);
         if s.starts_with("vector(") && s.ends_with(')') {
-            let inner = &s[7..s.len() - 1];
+            let inner = s.get(7..s_end).ok_or("Invalid vector format")?;
             let nums = inner
                 .split(',')
                 .map(|num| num.trim().parse::<f64>().map_err(|e| e.to_string()))
@@ -165,13 +170,14 @@ impl FromStr for PropValue {
                 nums[2] as f32,
             )))
         } else if s.starts_with('"') && s.ends_with('"') {
-            Ok(PropValue::String(s[1..s.len() - 1].to_string()))
+            let inner = s.get(1..s_end).ok_or("Invalid string format")?;
+            Ok(PropValue::String(inner.to_string()))
         } else if let Ok(i) = s.parse::<i64>() {
             Ok(PropValue::Integer(i))
         } else if let Ok(f) = s.parse::<f64>() {
             Ok(PropValue::Float(f))
         } else if s.starts_with('[') && s.ends_with(']') {
-            let inner = &s[1..s.len() - 1];
+            let inner = s.get(1..s_end).ok_or("Invalid list format")?;
             // Check if inner starts with '#', treat as Proplist
             if inner.trim_start().starts_with('#') {
                 let proplist = Proplist::parse(s)?;

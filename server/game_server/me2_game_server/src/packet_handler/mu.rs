@@ -1,7 +1,7 @@
+use crate::packet::server_packet::send_avatar;
 use crate::{
-    avatar::get_avatar_data,
     connection::ConnectionID,
-    packet::Mu,
+    packet::client_packet::Mu,
     proplist::{PropValue, Proplist},
     server::Server,
 };
@@ -36,7 +36,7 @@ pub fn handle_mu(server: &mut Server, connection_id: ConnectionID, data: &Mu) {
 
 fn inform_all_avatars(server: &mut Server, connection_id: ConnectionID) {
     let mut movement_list = Vec::new();
-    for (connection_id, connection) in server.connections.iter_mut() {
+    for (_, connection) in server.connections.iter_mut() {
         let Some(player) = &connection.player else {
             continue;
         };
@@ -53,24 +53,26 @@ fn inform_all_avatars(server: &mut Server, connection_id: ConnectionID) {
     }
     let movement_propvaluelist = PropValue::List(movement_list);
 
-    println!("Inform all avatars: {}", movement_propvaluelist.to_string());
-
-    let connection = server.connections.get_connection_mut(connection_id);
+    // println!("Inform all avatars: {}", movement_propvaluelist.to_string());
 
     // Send all other player's avatar data to the new player
-    let mut avatar_datas: Vec<String> = Vec::new();
+    let mut av_id_name_custs: Vec<(u32, String, String)> = Vec::new();
     for (&other_connection_id, other_connection) in server.connections.iter() {
         if other_connection_id == connection_id {
             continue;
         }
-        if let Some(avatar_data) = get_avatar_data(server, other_connection_id) {
-            avatar_datas.push(avatar_data);
+        if let Some(player) = &other_connection.player {
+            av_id_name_custs.push((
+                player.avatar_id,
+                player.display_name.clone(),
+                player.customization.clone(),
+            ));
         }
     }
 
     let connection = server.connections.get_connection_mut(connection_id);
-    for avatar_data in avatar_datas {
-        connection.send(&avatar_data).ok();
+    for (avatar_id, display_name, customization) in av_id_name_custs {
+        send_avatar(connection, avatar_id.into(), &display_name, &customization);
     }
     connection.send(&movement_propvaluelist.to_string()).ok();
 }

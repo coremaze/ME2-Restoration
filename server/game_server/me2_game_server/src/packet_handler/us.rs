@@ -1,6 +1,6 @@
 use crate::{
     connection::ConnectionID,
-    packet::CSPacket,
+    packet::client_packet::CSPacket,
     proplist::{PropValue, Proplist},
     server::Server,
 };
@@ -17,9 +17,6 @@ pub fn handle_us(server: &mut Server, connection_id: ConnectionID, _packet: &CSP
     let dn = &player.session_id;
     let cm = &player.customization;
     let uid = connection_id.to_string();
-    let resp = format!(
-        "U [#uid: {uid}, #dn: \"{dn}\", #iV: [], #lg: \"en\", #mm: 0, #cm: \"{cm}\", #uc: [], #uh: [], #bl: [], #bu: [], #cb: \"\", #pa: [], #pp: 0, #ppnew: 0, #gt: 0, #ga: 0, #hs: []]"
-    );
 
     let mut props = Proplist::new();
     props.add_element("uid", PropValue::String(uid));
@@ -40,7 +37,7 @@ pub fn handle_us(server: &mut Server, connection_id: ConnectionID, _packet: &CSP
     props.add_element("ga", PropValue::Integer(0));
     props.add_element("hs", PropValue::List(vec![]));
 
-    let resp = format!("U {}", props.to_string());
+    let resp = format!("U {}", props);
     println!("US response: {resp}");
 
     connection.send(&resp).ok();

@@ -1,8 +1,8 @@
 use std::net::TcpListener;
 
 use super::connection::{Connection, ConnectionID, Connections};
-use crate::packet;
-use crate::packet::CSPacket;
+use crate::packet::client_packet;
+use crate::packet::client_packet::CSPacket;
 use crate::packet_handler::*;
 
 pub struct Server {
@@ -50,15 +50,18 @@ impl Server {
 
     fn process_connections(&mut self) {
         for (connection_id, connection) in self.connections.iter_mut() {
-            connection.recv().ok();
+            if let Err(e) = connection.recv() {
+                eprintln!("Error receiving from connection {connection_id}: {e}");
+                connection.kill();
+            }
         }
 
         let mut received_packets_and_ids: Vec<(ConnectionID, CSPacket)> = Vec::new();
         for (&connection_id, connection) in self.connections.iter_mut() {
-            let packet = packet::take_packet(&mut connection.buffer);
+            let packet = client_packet::take_packet(&mut connection.buffer);
 
             if let Some(packet) = packet {
-                println!("Packet: {packet:?}");
+                // println!("Packet: {packet:?}");
                 received_packets_and_ids.push((connection_id, packet));
             }
         }
@@ -66,6 +69,13 @@ impl Server {
         for (connection_id, packet) in received_packets_and_ids {
             handle_packet(self, connection_id, &packet);
         }
+
+        for (cid, connection) in self.connections.iter_mut() {
+            if connection.is_killed() {
+                println!("Killing connection {}", cid);
+            }
+        }
+        self.connections.remove_dead();
     }
 }
 fn handle_packet(server: &mut Server, connection_id: ConnectionID, packet: &CSPacket) {
@@ -78,5 +88,6 @@ fn handle_packet(server: &mut Server, connection_id: ConnectionID, packet: &CSPa
         CSPacket::Ct(data) => handle_ct(server, connection_id, data),
         CSPacket::ImAlive => handle_im_alive(server, connection_id),
         CSPacket::Gp(avatar_id) => handle_gp(server, connection_id, avatar_id),
+        CSPacket::JmusBye => handle_jmus_bye(server, connection_id),
     }
 }

@@ -1,6 +1,8 @@
+use crate::packet::server_packet::send_auth_response;
+use crate::packet::server_packet::send_avatar;
 use crate::{
-    avatar::get_avatar_data, connection::ConnectionID, packet::JmusAuth, player::Player,
-    server::Server,
+    connection::ConnectionID, packet::client_packet::JmusAuth,
+    player::Player, server::Server,
 };
 
 pub fn handle_jmus_auth(server: &mut Server, connection_id: ConnectionID, data: &JmusAuth) {
@@ -18,25 +20,24 @@ pub fn handle_jmus_auth(server: &mut Server, connection_id: ConnectionID, data: 
         }
     }
 
-    let resp = if valid { "VALID" } else { "INVALID" };
-    {
-        let connection = server.connections.get_connection_mut(connection_id);
-
-        if valid {
-            connection.player = Some(Player::new(session_id, connection_id.to_num() as u32));
-        }
-
-        connection.send(resp).ok();
+    let connection = server.connections.get_connection_mut(connection_id);
+    if valid {
+        connection.player = Some(Player::new(session_id, connection_id.to_num() as u32));
     }
+    send_auth_response(connection, valid);
 
     // Send avatar data to all other players
-    if let Some(my_avatar_data) = get_avatar_data(server, connection_id) {
-        for (_, connection) in server.connections.iter_mut() {
-            if let Some(player) = &connection.player {
-                if player.ingame {
-                    connection.send(&my_avatar_data).ok();
-                }
+    if let Some(player) = &server.connections.get_connection(connection_id).player {
+        let (avatar_id, display_name, customization) = (
+            player.avatar_id,
+            player.display_name.clone(),
+            player.customization.clone(),
+        );
+
+        for (&cid, connection) in server.connections.iter_mut() {
+            if cid != connection_id {
+                send_avatar(connection, avatar_id.into(), &display_name, &customization);
             }
         }
-    }
+    };
 }

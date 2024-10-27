@@ -8,6 +8,7 @@ pub enum CSPacket {
     Ct(Ct),     // Chat message
     ImAlive,    // Keep alive
     Gp(String), // Get avatar data
+    JmusBye,    // Bye
 }
 
 #[derive(Debug)]
@@ -57,10 +58,16 @@ where
 {
     type Item = &'a [u8];
     fn next(&mut self) -> Option<Self::Item> {
-        self.split.next().map(|x| {
-            self.bytes_taken += x.len() + 1; // +1 for the \r
-            x
-        })
+        let next = self.split.next();
+        if let Some(x) = next {
+            self.bytes_taken = self
+                .bytes_taken
+                .checked_add(x.len())
+                .and_then(|x| x.checked_add(1))?; // +1 for the \r
+            Some(x)
+        } else {
+            None
+        }
     }
 }
 
@@ -111,13 +118,14 @@ pub fn take_packet(buffer: &mut Vec<u8>) -> Option<CSPacket> {
             let avatar_id = std::str::from_utf8(segments.next()?).ok()?;
             Some(CSPacket::Gp(avatar_id.to_string()))
         }
+        "JMUS_BYE" => Some(CSPacket::JmusBye),
         _ => {
             println!("Unknown packet type: {packet_type:?}");
             None
         }
     };
 
-    if let Some(packet) = &result {
+    if result.is_some() {
         buffer.drain(..segments.bytes_taken());
     }
     result
