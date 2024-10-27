@@ -25,7 +25,7 @@ pub fn send_avatar(
 }
 
 pub fn send_auth_response(connection: &mut Connection, valid: bool) {
-    let resp = if valid { "VALID" } else { "INVALID" };
+    let resp = if valid { "VALID" } else { "BYE" };
     connection.send(resp).ok();
 }
 
