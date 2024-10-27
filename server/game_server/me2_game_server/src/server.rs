@@ -1,8 +1,10 @@
 use std::net::TcpListener;
+use std::time::Instant;
 
 use super::connection::{Connection, ConnectionID, Connections};
 use crate::packet::client_packet;
 use crate::packet::client_packet::CSPacket;
+use crate::packet::server_packet::send_keepalive;
 use crate::packet_handler::*;
 
 pub struct Server {
@@ -22,6 +24,7 @@ impl Server {
         loop {
             self.accept_connections();
             self.process_connections();
+            self.send_keepalives();
         }
     }
 
@@ -76,6 +79,15 @@ impl Server {
             }
         }
         self.connections.remove_dead();
+    }
+
+    fn send_keepalives(&mut self) {
+        let now = Instant::now();
+        for (_, connection) in self.connections.iter_mut() {
+            if now.duration_since(connection.last_sent_keepalive).as_secs() > 10 {
+                send_keepalive(connection);
+            }
+        }
     }
 }
 fn handle_packet(server: &mut Server, connection_id: ConnectionID, packet: &CSPacket) {

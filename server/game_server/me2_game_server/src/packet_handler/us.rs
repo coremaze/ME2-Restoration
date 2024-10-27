@@ -49,5 +49,5 @@ pub fn handle_us(server: &mut Server, connection_id: ConnectionID, _packet: &CSP
     let resp = format!("U {}", props);
     println!("US response: {resp}");
 
-    connection.send(&resp).ok();
+    connection.send(&resp);
 }

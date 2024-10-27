@@ -4,6 +4,7 @@ use std::io::Read;
 use std::io::Write;
 use std::net::SocketAddr;
 use std::net::TcpStream;
+use std::time::Instant;
 
 use crate::player::Player;
 
@@ -26,6 +27,7 @@ pub struct Connection {
     addr: SocketAddr,
     killed: bool,
     pub buffer: Vec<u8>,
+    pub last_sent_keepalive: Instant,
 
     pub player: Option<Player>,
 }
@@ -40,6 +42,7 @@ impl Connection {
             addr,
             killed: false,
             buffer: Vec::new(),
+            last_sent_keepalive: Instant::now(),
             player: None,
         }
     }
@@ -61,10 +64,12 @@ impl Connection {
         }
     }
 
-    pub fn send(&mut self, message: &str) -> Result<(), std::io::Error> {
+    pub fn send(&mut self, message: &str) {
         // println!("Sending message: {}", message);
-        self.stream.write_all(message.as_bytes())?;
-        Ok(())
+        if let Err(e) = self.stream.write_all(message.as_bytes()) {
+            println!("Error sending message: {:?}", e);
+            self.kill();
+        }
     }
 
     pub fn kill(&mut self) {

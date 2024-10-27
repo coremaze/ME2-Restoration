@@ -84,5 +84,5 @@ fn inform_all_avatars(server: &mut Server, connection_id: ConnectionID) {
         send_avatar(connection, avatar_id.into(), &display_name, &customization);
     }
     let movement_packet = format!("{}\r", movement_propvaluelist.to_string());
-    connection.send(&movement_packet).ok();
+    connection.send(&movement_packet);
 }

@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use crate::{
     connection::Connection,
     proplist::{PropValue, Proplist},
@@ -6,7 +8,7 @@ use crate::{
 pub fn send_chat(connection: &mut Connection, username: &str, message: &str) {
     let message = message.replace('"', "\" & QUOTE & \"");
     let packet = format!("L~[\"{username}: {message}\"]\r");
-    connection.send(&packet).ok();
+    connection.send(&packet);
 }
 
 pub fn send_avatar(
@@ -21,14 +23,21 @@ pub fn send_avatar(
 
     let packet = format!("A~{} {}\r", avatar_id, avatar_proplist);
 
-    connection.send(&packet).ok();
+    connection.send(&packet);
 }
 
 pub fn send_auth_response(connection: &mut Connection, valid: bool) {
     let resp = if valid { "VALID" } else { "BYE" };
-    connection.send(resp).ok();
+    connection.send(resp);
 }
 
 pub fn send_alive(connection: &mut Connection) {
-    connection.send("ALIVE").ok();
+    connection.send("ALIVE");
+}
+
+pub fn send_keepalive(connection: &mut Connection) {
+    // Not a standard packet but it helps kill connections that have ended
+    println!("Sending keepalive");
+    connection.last_sent_keepalive = Instant::now();
+    connection.send("KEEPALIVE\r");
 }
