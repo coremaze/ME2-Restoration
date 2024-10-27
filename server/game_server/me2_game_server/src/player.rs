@@ -10,6 +10,8 @@ pub struct Player {
     pub customization: String,
     pub location: (f32, f32, f32),
     pub rotation: (f32, f32, f32),
+    pub animation_state: String,
+    pub animation_rate: f32,
 }
 
 impl Player {
@@ -25,6 +27,8 @@ impl Player {
             customization: String::from("241111112111111"),
             location: (0.0, 0.0, 0.0),
             rotation: (0.0, 0.0, 0.0),
+            animation_state: String::from("Idle"),
+            animation_rate: 1.0,
         }
     }
 }

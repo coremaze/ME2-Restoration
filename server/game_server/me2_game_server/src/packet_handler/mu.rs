@@ -28,6 +28,18 @@ pub fn handle_mu(server: &mut Server, connection_id: ConnectionID, data: &Mu) {
         player.rotation = *rotation;
     }
 
+    if let Some(PropValue::String(animation_state)) = movement_prop_list.get_element("as") {
+        player.animation_state = animation_state.clone();
+    }
+
+    if let Some(ar) = movement_prop_list.get_element("ar") {
+        match ar {
+            PropValue::Float(animation_rate) => player.animation_rate = *animation_rate as f32,
+            PropValue::Integer(animation_rate) => player.animation_rate = *animation_rate as f32,
+            _ => (),
+        }
+    }
+
     // println!("MU Movement packet received: {movement_prop_list:?}");
 
     // Inform this player about all other players' movement
@@ -48,7 +60,8 @@ fn inform_all_avatars(server: &mut Server, connection_id: ConnectionID) {
         movement_proplist.add_element("ic", PropValue::Integer(0));
         movement_proplist.add_element("gs", PropValue::Integer(1));
         movement_proplist.add_element("gs", PropValue::Integer(1));
-        movement_proplist.add_element("ar", PropValue::Float(0.15));
+        movement_proplist.add_element("ar", PropValue::Float(player.animation_rate.into()));
+        movement_proplist.add_element("as", PropValue::String(player.animation_state.clone()));
         movement_list.push(PropValue::Proplist(movement_proplist));
     }
     let movement_propvaluelist = PropValue::List(movement_list);

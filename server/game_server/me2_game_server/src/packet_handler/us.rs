@@ -30,7 +30,16 @@ pub fn handle_us(server: &mut Server, connection_id: ConnectionID, _packet: &CSP
     props.add_element("bl", PropValue::List(vec![]));
     props.add_element("bu", PropValue::List(vec![])); // Buddy list
     props.add_element("cb", PropValue::Void); // Chat block password (VOID to allow chat without password)
-    props.add_element("pa", PropValue::List(vec![]));
+    props.add_element(
+        "pa",
+        PropValue::List(vec![
+            // pkMAXATTRIB is 1000
+            PropValue::Float(1000.0), // Jump power
+            PropValue::Float(510.0),  // Run power
+            PropValue::Float(510.0),  // Trade?
+            PropValue::Float(510.0),  // Something about vehicles?
+        ]),
+    ); // Player power(?) attributes
     props.add_element("pp", PropValue::Integer(0));
     props.add_element("ppnew", PropValue::Integer(0));
     props.add_element("gt", PropValue::Integer(0));

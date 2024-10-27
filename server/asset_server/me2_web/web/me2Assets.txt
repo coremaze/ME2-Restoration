@@ -259,29 +259,77 @@
     ], 
     #veh: [
         #foot: [
+            // SRC
             #sr: 1, 
+
+            // MODLIST
             #ml: 1, 
+
+            // ANIMLIST
             #al: 1, 
+
+            // ANIMXTRA
             #ax: 1, 
+
+            // FBOUND
             #fb: 1, 
+
+            //SBOUND
             #sb: 1, 
+
+            // BOUNDB
             #bb: 1, 
-            #aa: 1, 
-            #sp: 50.0, 
+
+            // AVAT
+            // The animation that plays 
+            //#aa: "idle",
+
+            // SPEED 
+            #sp: 5.0, 
+
+            // REVERSE
             #rv: 1, 
+
+            // AGILITY
             #ag: 1, 
-            #or: 1, 
+
+            // ORIENT
+            #or: 12, 
+
+            // SLIPSPD
             #ss: 1, 
+
+            // INERT
             #in: 1, 
+
+            // BOUNCE
             #bc: 1, 
-            #gv: -0.3, 
-            #tb: 1, 
+
+            // GRAVITY
+            #gv: -0.3,
+
+            // TURBO 
+            #tb: 1,
+
+            // BEHAV 
             #bh: 1, 
-            #sw: 1, 
+
+            // SWAY
+            #sw: 1,
+
+            // YAW 
             #yw: 1, 
+
+            // PITCH
             #pi: 1, 
-            #cs: 1, 
+
+            // COST
+            #cs: 1,
+
+            // ALTITUDE 
             #at: 1, 
+
+            // TRADE
             #tr: 1
         ]
     ],
@@ -298,6 +346,41 @@
             -180
         )
     ],
+
+    // idle, walk, run, jump, seat
+    // List of 4 elements L (looped), S (startTime), E (endTime), R (scale)
+    //#animidle: [
+    //    1,
+    //    100, 
+    //    8000,
+    //    0.5
+    //],
+    #animidle: [
+        1,
+        100, 
+        8000,
+        0.5
+    ],
+    #animwalk: [
+        1,
+        8400, 
+        9620,
+        1.0
+    ],
+    #animrun: [
+        1,
+        12535, 
+        13125,
+        0.75
+    ],
+    #animjump: [
+        0,
+        16700, 
+        17200,
+        0.75
+    ],
+    // Still need fall, seat, swim, climb, jetpack etc
+
 
     // tx = texture
     // 1 = male, 2 = female

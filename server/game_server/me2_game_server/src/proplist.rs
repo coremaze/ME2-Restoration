@@ -27,7 +27,7 @@ impl std::fmt::Display for PropValue {
                     .join(",")
             ),
             PropValue::Proplist(p) => p.to_string(),
-            PropValue::Void => "".to_string(),
+            PropValue::Void => "void".to_string(),
         };
         write!(f, "{}", s)
     }
