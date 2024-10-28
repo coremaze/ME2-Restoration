@@ -4,7 +4,9 @@ use std::time::Instant;
 use super::connection::{Connection, ConnectionID, Connections};
 use crate::packet::client_packet;
 use crate::packet::client_packet::CSPacket;
-use crate::packet::server_packet::send_keepalive;
+use crate::packet::server_packet::{
+    send_admin_command, send_chat_alert, send_keepalive, AdminCommand,
+};
 use crate::packet_handler::*;
 
 pub struct Server {
@@ -21,10 +23,31 @@ impl Server {
     }
 
     pub fn run(&mut self) {
-        loop {
+        // Set up Ctrl-C handler
+        let running = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(true));
+        let r = running.clone();
+        ctrlc::set_handler(move || {
+            r.store(false, std::sync::atomic::Ordering::SeqCst);
+        })
+        .expect("Error setting Ctrl-C handler");
+
+        // Main loop
+        while running.load(std::sync::atomic::Ordering::SeqCst) {
             self.accept_connections();
             self.process_connections();
             self.send_keepalives();
+        }
+
+        // Shutdown
+        println!("Server is shutting down.");
+        // Send shutdown message to all connections
+        for (_, connection) in self.connections.iter_mut() {
+            send_chat_alert(
+                connection,
+                "Server is shutting down. You will be disconnected.",
+            );
+            send_admin_command(connection, AdminCommand::Kill);
+            connection.kill();
         }
     }
 
