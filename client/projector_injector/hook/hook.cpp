@@ -247,13 +247,13 @@ BOOL APIENTRY DllMain(HMODULE hModule,
         DisableThreadLibraryCalls(hModule);
 
         // Allocate a new console for the DLL
-        if (AllocConsole()) {
-            freopen("CONOUT$", "w", stdout);
-            freopen("CONOUT$", "w", stderr);
-            std::cout << "[Hook] Console allocated successfully." << std::endl;
-        } else {
-            std::cerr << "[Hook] Failed to allocate console." << std::endl;
-        }
+        // if (AllocConsole()) {
+        //     freopen("CONOUT$", "w", stdout);
+        //     freopen("CONOUT$", "w", stderr);
+        //     std::cout << "[Hook] Console allocated successfully." << std::endl;
+        // } else {
+        //     std::cerr << "[Hook] Failed to allocate console." << std::endl;
+        // }
 
         // Get the path of the current DLL
         char dllPath[MAX_PATH];
