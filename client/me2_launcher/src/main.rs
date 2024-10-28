@@ -155,12 +155,12 @@ impl Application for Launcher {
                     .parent()
                     .expect("Failed to get parent directory");
 
-                let injector_exe_path = current_dir.join("DLLInjector.exe");
+                let injector_exe_path = current_dir.join("injector.exe");
                 let game_exe_path = current_dir
                     .join("projector")
                     .join("PJ1159")
                     .join("Projector.exe");
-                let dll_path = current_dir.join("libHookLibrary.dll");
+                let dll_path = current_dir.join("me2hook.dll");
                 let game_dcr_path = current_dir
                     .join("me2")
                     .join("iToys")
