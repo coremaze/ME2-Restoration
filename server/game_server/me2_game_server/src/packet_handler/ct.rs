@@ -1,5 +1,7 @@
-use crate::packet::server_packet::send_chat;
-use crate::{connection::ConnectionID, packet::client_packet::Ct, server::Server};
+use crate::{
+    commands::handle_command, connection::ConnectionID, packet::client_packet::Ct,
+    packet::server_packet::send_chat, server::Server,
+};
 
 pub fn handle_ct(server: &mut Server, connection_id: ConnectionID, data: &Ct) {
     // println!("Chat message: {:#?}", data);
@@ -18,6 +20,9 @@ pub fn handle_ct(server: &mut Server, connection_id: ConnectionID, data: &Ct) {
             send_chat(connection, &username, &chat);
         }
     } else if data.target.is_empty() {
+        if handle_command(server, connection_id, &data.chat) {
+            return;
+        }
         let username = {
             let connection = server.connections.get_connection(connection_id);
             let Some(player) = &connection.player else {

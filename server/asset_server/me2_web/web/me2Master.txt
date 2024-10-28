@@ -37,5 +37,8 @@
     ],
     #level2area1: [
         #en: ["Level 2 Area 1"]
-    ]
+    ],
+    #lkill: {
+        #en: ["Your connection has ended."]
+    }
 ]

@@ -6,8 +6,33 @@ use crate::{
 };
 
 pub fn send_chat(connection: &mut Connection, username: &str, message: &str) {
-    let message = message.replace('"', "\" & QUOTE & \"");
     let packet = format!("L~[\"{username}: {message}\"]\r");
+    connection.send(&packet);
+}
+
+pub fn send_server_message(connection: &mut Connection, message: &str) {
+    let packet = format!("L~[\"{message}\"]\r");
+    connection.send(&packet);
+}
+
+pub fn send_chat_alert(connection: &mut Connection, message: &str) {
+    let packet = format!("K~\n\n{message}\r");
+    connection.send(&packet);
+}
+
+pub enum AdminCommand {
+    Mute,
+    Unmute,
+    Kill,
+}
+
+pub fn send_admin_command(connection: &mut Connection, command: AdminCommand) {
+    let command_str = match command {
+        AdminCommand::Mute => "MUTE",
+        AdminCommand::Unmute => "UNMUTE",
+        AdminCommand::Kill => "KILL",
+    };
+    let packet = format!("X~{command_str}\r");
     connection.send(&packet);
 }
 
