@@ -59,7 +59,10 @@ pub fn start_and_inject_dll(
     let mut command_line = format!(
         "\"{}\" {}",
         exe_path.as_ref().display(),
-        args.as_ref().join(" ")
+        args.iter()
+            .map(|arg| format!("\"{}\"", arg.replace("\"", "\\\"")))
+            .collect::<Vec<String>>()
+            .join(" ")
     );
 
     let command_line_pstr = PSTR {
