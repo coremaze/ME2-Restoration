@@ -5,3 +5,7 @@ edition = "2021"
 
 [dependencies]
 ctrlc = "3.4.5"
+
+[profile.release]
+strip = true
+lto = true

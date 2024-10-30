@@ -36,6 +36,7 @@ impl Server {
             self.accept_connections();
             self.process_connections();
             self.send_keepalives();
+            std::thread::sleep(std::time::Duration::from_millis(10));
         }
 
         // Shutdown

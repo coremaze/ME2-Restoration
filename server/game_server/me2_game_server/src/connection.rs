@@ -48,6 +48,11 @@ impl Connection {
     }
 
     pub fn recv(&mut self) -> std::io::Result<usize> {
+        if self.buffer.len() > 1_000_000 {
+            println!("Connection buffer too large, killing connection");
+            self.kill();
+            return Ok(0);
+        }
         let mut buffer = [0; 512];
 
         match self.stream.read(&mut buffer) {
