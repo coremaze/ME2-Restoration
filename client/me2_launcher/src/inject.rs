@@ -5,19 +5,20 @@ use core::ffi::c_void;
 use std::ffi::CString;
 use std::path::Path;
 use windows::core::{PCSTR, PSTR};
-use windows::Win32::Foundation::{CloseHandle, GetLastError, FARPROC};
+use windows::Win32::Foundation::{CloseHandle, GetLastError, FARPROC, HANDLE, WAIT_TIMEOUT};
 use windows::Win32::System::Diagnostics::Debug::WriteProcessMemory;
 use windows::Win32::System::LibraryLoader::{GetModuleHandleA, GetProcAddress};
 use windows::Win32::System::Memory::{
     VirtualAllocEx, VirtualFreeEx, MEM_COMMIT, MEM_RELEASE, MEM_RESERVE, PAGE_READWRITE,
 };
 use windows::Win32::System::Threading::{
-    CreateProcessA, CreateRemoteThread, ResumeThread, WaitForSingleObject, CREATE_SUSPENDED,
-    INFINITE, LPTHREAD_START_ROUTINE, PROCESS_INFORMATION, STARTUPINFOA,
+    CreateProcessA, CreateRemoteThread, ResumeThread, TerminateProcess, WaitForSingleObject,
+    CREATE_SUSPENDED, INFINITE, LPTHREAD_START_ROUTINE, PROCESS_INFORMATION, STARTUPINFOA,
 };
 
 #[derive(Debug)]
 pub enum InjectionError {
+    CStringFailed(String),
     CreateProcessFailed(String),
     VirtualAllocExFailed(String),
     WriteProcessMemoryFailed(String),
@@ -29,6 +30,7 @@ pub enum InjectionError {
 impl std::fmt::Display for InjectionError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            InjectionError::CStringFailed(msg) => write!(f, "CString failed: {}", msg),
             InjectionError::CreateProcessFailed(msg) => write!(f, "CreateProcessA failed: {}", msg),
             InjectionError::VirtualAllocExFailed(msg) => {
                 write!(f, "VirtualAllocEx failed: {}", msg)
@@ -55,7 +57,7 @@ pub fn start_and_inject_dll(
     exe_path: impl AsRef<Path>,
     dll_path: impl AsRef<Path>,
     args: &[String],
-) -> Result<(), InjectionError> {
+) -> Result<InjectedProcess, InjectionError> {
     let mut command_line = format!(
         "\"{}\" {}",
         exe_path.as_ref().display(),
@@ -65,8 +67,11 @@ pub fn start_and_inject_dll(
             .join(" ")
     );
 
+    let mut command_line_cstring =
+        CString::new(command_line).map_err(|e| InjectionError::CStringFailed(e.to_string()))?;
+
     let command_line_pstr = PSTR {
-        0: command_line.as_mut_ptr(),
+        0: command_line_cstring.as_ptr() as *mut u8,
     };
 
     let startup_info = STARTUPINFOA::default();
@@ -88,8 +93,6 @@ pub fn start_and_inject_dll(
         )
     };
 
-    // println!("CreateProcessA result: {:?}", res);
-
     if res.is_err() {
         return Err(InjectionError::CreateProcessFailed(format!(
             "Error code: {:?}",
@@ -101,8 +104,7 @@ pub fn start_and_inject_dll(
 
     // Allocate memory in the target process for the DLL path
     let dll_path_string = CString::new(dll_path.as_ref().to_string_lossy().to_string())
-        .map_err(|e| InjectionError::WriteProcessMemoryFailed(e.to_string()))?;
-    // println!("dll_path_string: {:?}", dll_path_string);
+        .map_err(|e| InjectionError::CStringFailed(e.to_string()))?;
     let dll_path_len = dll_path_string.as_bytes().len();
     let dll_path_void_ptr = dll_path_string.as_ptr() as *mut c_void;
 
@@ -116,7 +118,6 @@ pub fn start_and_inject_dll(
         )
     };
 
-    // println!("VirtualAllocEx result: {:?}", remote_memory);
     if remote_memory.is_null() {
         let error = unsafe { GetLastError() };
         return Err(InjectionError::VirtualAllocExFailed(format!(
@@ -124,11 +125,6 @@ pub fn start_and_inject_dll(
             error
         )));
     }
-
-    // println!("process_handle: {:?}", process_handle);
-    // println!("alloc_mem: {:?}", remote_memory);
-    // println!("dll_path_void_ptr: {:?}", dll_path_void_ptr);
-    // println!("dll_path_len: {:?}", dll_path_len);
 
     // Write the DLL path to the allocated memory
     let write_res = unsafe {
@@ -141,8 +137,6 @@ pub fn start_and_inject_dll(
         )
     };
 
-    // println!("WriteProcessMemory result: {:?}", write_res);
-
     if write_res.is_err() {
         return Err(InjectionError::WriteProcessMemoryFailed(format!(
             "Error code: {:?}",
@@ -151,19 +145,13 @@ pub fn start_and_inject_dll(
     }
 
     // Get the address of LoadLibraryA in kernel32.dll
-    let kernel32_dll_cstring = CString::new("kernel32.dll")
-        .map_err(|e| InjectionError::GetModuleHandleFailed(e.to_string()))?;
-    // let kernel32_dll_len = kernel32_dll_cstring.as_bytes().len();
+    let kernel32_dll_cstring =
+        CString::new("kernel32.dll").map_err(|e| InjectionError::CStringFailed(e.to_string()))?;
     let kernel32_dll_pcstr = PCSTR {
         0: kernel32_dll_cstring.as_ptr() as *const u8,
     };
 
-    // println!("kernel32_dll_cstring: {:?}", kernel32_dll_cstring);
-    // println!("kernel32_dll_len: {:?}", kernel32_dll_len);
-    // println!("kernel32_dll_pcstr: {:?}", kernel32_dll_pcstr);
-
     let kernel32_res = unsafe { GetModuleHandleA(kernel32_dll_pcstr) };
-    // println!("GetModuleHandleA result: {:?}", kernel32_res);
 
     let kernel32_handle = match kernel32_res {
         Ok(handle) => handle,
@@ -175,14 +163,13 @@ pub fn start_and_inject_dll(
         }
     };
 
-    // Create a remote thread that calls LoadLibraryA with the DLL path
-    let load_library_a_cstring = CString::new("LoadLibraryA")
-        .map_err(|e| InjectionError::GetProcAddressFailed(e.to_string()))?;
+    // Get the address of LoadLibraryA
+    let load_library_a_cstring =
+        CString::new("LoadLibraryA").map_err(|e| InjectionError::CStringFailed(e.to_string()))?;
     let load_library_a_pcstr = PCSTR {
         0: load_library_a_cstring.as_ptr() as *const u8,
     };
     let load_library_a_addr_res = unsafe { GetProcAddress(kernel32_handle, load_library_a_pcstr) };
-    // println!("GetProcAddress result: {:?}", load_library_a_addr_res);
 
     let load_library_a_addr = match load_library_a_addr_res {
         FARPROC::Some(addr) => addr,
@@ -195,14 +182,9 @@ pub fn start_and_inject_dll(
     };
 
     // Create a remote thread that calls LoadLibraryA with the DLL path
-    // println!("process_handle: {:?}", process_handle);
-    // println!("load_library_a_addr: {:?}", load_library_a_addr);
-    // println!("remote_memory: {:?}", remote_memory);
-
     let thread_handle = unsafe {
         let lpthread_start_routine =
             LPTHREAD_START_ROUTINE::Some(std::mem::transmute(load_library_a_addr));
-        // println!("lpthread_start_routine: {:?}", lpthread_start_routine);
         CreateRemoteThread(
             process_handle,
             None,
@@ -213,8 +195,6 @@ pub fn start_and_inject_dll(
             None,
         )
     };
-
-    // println!("CreateRemoteThread result: {:?}", thread_handle);
 
     let thread_handle = match thread_handle {
         Ok(handle) => handle,
@@ -228,30 +208,61 @@ pub fn start_and_inject_dll(
 
     // Wait for the remote thread to finish
     let _wait_res = unsafe { WaitForSingleObject(thread_handle, INFINITE) };
-    // println!("WaitForSingleObject result: {:?}", wait_res);
 
     // Clean up
     unsafe {
         let _free_res = VirtualFreeEx(process_handle, remote_memory, 0, MEM_RELEASE);
-        // println!("VirtualFreeEx result: {:?}", free_res);
         let _close_res = CloseHandle(thread_handle);
-        // println!("CloseHandle result: {:?}", close_res);
     }
 
     // Resume the main thread of the process
     unsafe {
         let _resume_res = ResumeThread(process_info.hThread);
-        // println!("ResumeThread result: {:?}", resume_res);
     }
 
-    // Close handles
-    unsafe {
-        let _close_process_res = CloseHandle(process_info.hProcess);
-        // println!("CloseHandle process result: {:?}", close_process_res);
-        let _close_thread_res = CloseHandle(process_info.hThread);
-        // println!("CloseHandle thread result: {:?}", close_thread_res);
+    // Create the InjectedProcess struct to return
+    Ok(InjectedProcess {
+        process_handle: process_info.hProcess,
+        thread_handle,
+    })
+}
+
+// Define a struct to hold the process and thread handles
+#[derive(Debug)]
+pub struct InjectedProcess {
+    process_handle: HANDLE,
+    thread_handle: HANDLE,
+}
+
+impl InjectedProcess {
+    /// Checks if the injected process is still running.
+    pub fn is_running(&self) -> bool {
+        unsafe {
+            let wait_result = WaitForSingleObject(self.process_handle, 0);
+            wait_result == WAIT_TIMEOUT
+        }
     }
 
-    // println!("Done!");
-    Ok(())
+    /// Kills the injected process.
+    pub fn kill(&self) -> Result<(), InjectionError> {
+        unsafe {
+            if TerminateProcess(self.process_handle, 0).is_err() {
+                Err(InjectionError::CreateProcessFailed(format!(
+                    "Failed to terminate process: {:?}",
+                    GetLastError()
+                )))
+            } else {
+                Ok(())
+            }
+        }
+    }
+}
+
+impl Drop for InjectedProcess {
+    fn drop(&mut self) {
+        unsafe {
+            CloseHandle(self.process_handle);
+            CloseHandle(self.thread_handle);
+        }
+    }
 }

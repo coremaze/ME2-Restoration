@@ -1,16 +1,19 @@
 #![windows_subsystem = "windows"]
 use config::{Config, File};
+use iced::border::Radius;
 use iced::widget::text_input;
+use iced::Subscription;
 use iced::{
     executor,
     widget::{button, Button, Column, Container, Space, Text, TextInput},
-    Application, Background, BorderRadius, Color, Command, Element, Length, Settings,
+    Application, Background, Color, Command, Element, Length, Settings,
 };
 mod inject;
 
 struct Launcher {
     ip: String,
     session: String,
+    injected_process: Option<inject::InjectedProcess>,
 }
 
 #[derive(Debug, Clone)]
@@ -18,6 +21,9 @@ enum Message {
     IpChanged(String),
     SessionChanged(String),
     LoginPressed,
+    LogoutPressed,
+    UpdateStatus,
+    Exit,
 }
 
 struct CustomButtonStyle;
@@ -28,7 +34,11 @@ impl button::StyleSheet for CustomButtonStyle {
     fn active(&self, _: &Self::Style) -> button::Appearance {
         button::Appearance {
             background: Some(iced::Background::Color(iced::Color::BLACK)),
-            border_radius: BorderRadius::from(6.0),
+            border: iced::Border {
+                color: iced::Color::BLACK,
+                width: 1.0,
+                radius: Radius::from(6.0),
+            },
             text_color: iced::Color::WHITE,
             ..button::Appearance::default()
         }
@@ -37,7 +47,11 @@ impl button::StyleSheet for CustomButtonStyle {
     fn hovered(&self, _: &Self::Style) -> button::Appearance {
         button::Appearance {
             background: Some(iced::Background::Color(iced::Color::BLACK)),
-            border_radius: BorderRadius::from(6.0),
+            border: iced::Border {
+                color: iced::Color::BLACK,
+                width: 1.0,
+                radius: Radius::from(6.0),
+            },
             text_color: iced::Color::WHITE,
             ..button::Appearance::default()
         }
@@ -51,16 +65,18 @@ impl text_input::StyleSheet for CustomInputStyle {
     fn active(&self, _: &Self::Style) -> text_input::Appearance {
         text_input::Appearance {
             background: Background::Color(Color::WHITE),
-            border_radius: BorderRadius::from(6.0),
-            border_width: 1.0,
-            border_color: Color::BLACK,
+            border: iced::Border {
+                color: iced::Color::BLACK,
+                width: 1.0,
+                radius: Radius::from(6.0),
+            },
             icon_color: Color::BLACK,
         }
     }
 
     fn focused(&self, _: &Self::Style) -> text_input::Appearance {
         text_input::Appearance {
-            border_color: iced::Color::from_rgb(0.0, 0.5, 1.0),
+            // border_color: iced::Color::from_rgb(0.0, 0.5, 1.0),
             ..self.active(&iced::Theme::default())
         }
     }
@@ -121,7 +137,14 @@ impl Application for Launcher {
             .get::<String>("Settings.session")
             .unwrap_or_else(|_| "MyName".to_string());
 
-        (Launcher { ip, session }, Command::none())
+        (
+            Launcher {
+                ip,
+                session,
+                injected_process: None,
+            },
+            Command::none(),
+        )
     }
 
     fn title(&self) -> String {
@@ -168,14 +191,65 @@ impl Application for Launcher {
                     .expect("Failed to convert path to string")
                     .to_string();
 
-                inject::start_and_inject_dll(game_exe_path, dll_path, &[game_dcr_path]);
+                match inject::start_and_inject_dll(game_exe_path, dll_path, &[game_dcr_path]) {
+                    Ok(injected_process) => {
+                        self.injected_process = Some(injected_process);
+                    }
+                    Err(e) => {
+                        println!("Error injecting DLL: {:?}", e);
+                    }
+                }
 
                 Command::none()
+            }
+            Message::UpdateStatus => {
+                if let Some(ref injected_process) = self.injected_process {
+                    if !injected_process.is_running() {
+                        self.injected_process = None;
+                    }
+                }
+                Command::none()
+            }
+            Message::LogoutPressed => {
+                if let Some(ref injected_process) = self.injected_process {
+                    if let Err(e) = injected_process.kill() {
+                        println!("Failed to kill injected process: {:?}", e);
+                    }
+                    self.injected_process = None;
+                }
+                Command::none()
+            }
+            Message::Exit => {
+                //exit iced
+                if let Some(ref injected_process) = self.injected_process {
+                    if let Err(e) = injected_process.kill() {
+                        println!("Failed to kill injected process: {:?}", e);
+                    }
+                    self.injected_process = None;
+                }
+                std::process::exit(0);
             }
         }
     }
 
     fn view(&self) -> Element<Message> {
+        let (button_text, button_message) = match self.injected_process {
+            Some(_) => ("Logout", Message::LogoutPressed),
+            None => ("Login", Message::LoginPressed),
+        };
+
+        let button_content = {
+            Container::new(Text::new(button_text))
+                .width(Length::Fill)
+                .center_x()
+                .center_y()
+        };
+
+        let action_button = Button::new(button_content)
+            .style(iced::theme::Button::Custom(Box::new(CustomButtonStyle)))
+            .on_press(button_message)
+            .width(Length::Fill);
+
         let content = Column::new()
             .padding(20)
             .spacing(10)
@@ -194,17 +268,7 @@ impl Application for Launcher {
                     .padding(10),
             )
             .push(Space::with_height(Length::Fixed(10.0)))
-            .push(
-                Button::new(
-                    Container::new(Text::new("Login"))
-                        .width(Length::Fill)
-                        .center_x()
-                        .center_y(),
-                )
-                .style(iced::theme::Button::Custom(Box::new(CustomButtonStyle)))
-                .on_press(Message::LoginPressed)
-                .width(Length::Fill),
-            );
+            .push(action_button);
 
         Container::new(content)
             .width(Length::Fill)
@@ -213,13 +277,38 @@ impl Application for Launcher {
             // .center_y()
             .into()
     }
+
+    fn subscription(&self) -> Subscription<Message> {
+        let mut subscriptions = Vec::<Subscription<Message>>::new();
+
+        if let Some(ref injected_process) = self.injected_process {
+            subscriptions.push(
+                iced::time::every(std::time::Duration::from_millis(50))
+                    .map(move |_| Message::UpdateStatus),
+            );
+        }
+
+        let event_listener = iced::event::listen_with(|event, status| match event {
+            iced::Event::Window(id, iced::window::Event::CloseRequested) => Some(Message::Exit),
+            iced::Event::Window(id, iced::window::Event::Closed) => Some(Message::Exit),
+            _ => None,
+        });
+
+        subscriptions.push(event_listener);
+
+        Subscription::batch(subscriptions)
+    }
 }
 
 fn main() -> iced::Result {
     let settings = Settings {
         window: iced::window::Settings {
-            size: (300, 275),
+            size: iced::Size {
+                width: 300.,
+                height: 275.,
+            },
             resizable: false,
+            exit_on_close_request: false,
             ..iced::window::Settings::default()
         },
         ..Settings::default()
