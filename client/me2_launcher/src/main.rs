@@ -6,8 +6,7 @@ use iced::{
     widget::{button, Button, Column, Container, Space, Text, TextInput},
     Application, Background, BorderRadius, Color, Command, Element, Length, Settings,
 };
-
-use std::process::Command as StdCommand;
+mod inject;
 
 struct Launcher {
     ip: String,
@@ -155,7 +154,6 @@ impl Application for Launcher {
                     .parent()
                     .expect("Failed to get parent directory");
 
-                let injector_exe_path = current_dir.join("injector.exe");
                 let game_exe_path = current_dir
                     .join("projector")
                     .join("PJ1159")
@@ -165,15 +163,12 @@ impl Application for Launcher {
                     .join("me2")
                     .join("iToys")
                     .join("ME2Data")
-                    .join("me2Game.dcr");
+                    .join("me2Game.dcr")
+                    .to_str()
+                    .expect("Failed to convert path to string")
+                    .to_string();
 
-                println!("{}", injector_exe_path.display());
-                StdCommand::new(injector_exe_path)
-                    .arg(game_exe_path)
-                    .arg(dll_path)
-                    .arg(game_dcr_path)
-                    .spawn()
-                    .expect("Failed to run game");
+                inject::start_and_inject_dll(game_exe_path, dll_path, &[game_dcr_path]);
 
                 Command::none()
             }
