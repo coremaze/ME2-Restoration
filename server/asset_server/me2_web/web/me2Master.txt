@@ -3,7 +3,25 @@
         [1,2,"L01A01",3,4,5],
         [
             // Area name (to be used for translation)
-            "level1area1",
+            "level1area2right",
+
+            // nav (image?) source
+            "navL01A01.jpg",
+
+            // Nav Zone
+            "L01A02",
+
+            // Spawn position
+            vector(-1000, 30, -700),
+
+            4,
+
+            // Gem something
+            5
+        ],
+        [
+            // Area name (to be used for translation)
+            "level1area2left",
 
             // nav (image?) source
             "navL01A01.jpg",
@@ -28,15 +46,17 @@
             5
         ],
         [1,2,"L01A04",3,4,5],
-        [1,2,"L01A05",3,4,5],
-        [1,2,"L01A06",3,4,5]
+        [1,2,"L01A05",3,4,5]
     ],
     // Property name translations
-    #level1area1: [
-        #en: ["Level 1 Area 1"]
+    #level1area2right: [
+        #en: ["L1 A2 (Right)"]
+    ],
+    #level1area2left: [
+        #en: ["L1 A2 (Left)"]
     ],
     #level2area1: [
-        #en: ["Level 2 Area 1"]
+        #en: ["L2 A1"]
     ],
     #lkill: {
         #en: ["Your connection has ended."]
