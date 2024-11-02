@@ -1,0 +1,32 @@
+[package]
+name = "me2hook"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+config = "0.13"
+libc = "0.2.161"
+windows = { version = "0.58", features = [
+    "Win32_Foundation",
+    "Win32_Networking_WinSock",
+    "Win32_System_LibraryLoader",
+    "Win32_System_SystemServices",
+    "Win32_System_Memory",
+    "Win32_System_Registry",
+    "Win32_System_Console",
+    "Win32_Storage",
+    "Win32_Storage_FileSystem",
+    "Win32_Security"
+]}
+
+[profile.release]
+strip = true
+lto = true
+panic = "abort"
+
+[features]
+default = []
+console = []
