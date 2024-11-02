@@ -10,18 +10,19 @@
         "directionalLight_main"
     ],
     #zones: [
-        "W01L01STRUCT.w3d",
-        "W01L01A01Z01.w3d",
-        "W01L01A01Z02.w3d",
-        "W01L01A02Z01.w3d",
-        "W01L01A02Z02.w3d",
-        "W01L01A03Z01.w3d",
-        "W01L01A03Z02.w3d",
-        "W01L01A04Z01.w3d",
-        "W01L01A04Z02.w3d",
-        "W01L01A05Z01.w3d",
-        "W01L01A05Z02.w3d",
-        "W01L01A05Z03.w3d"
+        // Bounding boxes for area zones.
+        // When the player touches one of these models, they switch zones.
+        // "A01Z01Shape",
+        // "A01Z02Shape",
+        // "A02Z01Shape",
+        // "A02Z02Shape",
+        // "A03Z01Shape",
+        // "A03Z02Shape",
+        // "A04Z01Shape",
+        // "A04Z02Shape",
+        // "A05Z01Shape",
+        // "A05Z02Shape",
+        // "A05Z03Shape"
     ],
     #Z01: [
         #ROOT: "scene", 
