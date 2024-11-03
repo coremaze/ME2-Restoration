@@ -1,13 +1,13 @@
 [
     // Boy avatar
-    #ava1src: "ava1.w3d", 
+    #ava1src: "ava1.w3d",
 
     // Girl avatar
-    #ava2src: "ava2.w3d", 
+    #ava2src: "ava2.w3d",
 
     // Boy avatar customizations
     #ava1cust: [
-        #base: "boy:ROOT-skeleton", 
+        #base: "boy:ROOT-skeleton",
 
         // These are poBase shader indices (what? why?)
         // 1: boy:skin_lambert_1
@@ -18,27 +18,27 @@
         // 6: boy:bottomspants_lambert_1
         // 7: boy:shoessneaks_lambert_1
         // 8: boy:shoessneaks_lambert_1
-        
-        #kc: 1, 
-        #fc: 2, 
-        #sc: 7, 
+
+        #kc: 1,
+        #fc: 2,
+        #sc: 7,
 
         // Model lists
         #h: [
-            "boy:ROOT_hair_parted-skeleton", 
-            "boy:ROOT_hair_caesar-skeleton", 
-            "boy:ROOT_hair_shag-skeleton", 
-            "boy:ROOT_hair_rock-skeleton", 
-            "boy:ROOT_hair_buzz-skeleton", 
+            "boy:ROOT_hair_parted-skeleton",
+            "boy:ROOT_hair_caesar-skeleton",
+            "boy:ROOT_hair_shag-skeleton",
+            "boy:ROOT_hair_rock-skeleton",
+            "boy:ROOT_hair_buzz-skeleton",
             "boy:ROOT_hair_afro-skeleton"
-        ], 
+        ],
         #t: [
             "boy:ROOT_shirt_t-skeleton"
-        ], 
+        ],
         #b: [
-            "boy:ROOT_pants-skeleton", 
+            "boy:ROOT_pants-skeleton",
             "boy:ROOT_shorts-skeleton"
-        ], 
+        ],
         #p: [
             "boy:ROOT_backpack-skeleton"
         ],
@@ -47,27 +47,27 @@
         #hstyle: 6,
         #hair: [
             // black
-            "101010", 
+            "101010",
             // blonde
-            "AD8850", 
+            "AD8850",
             // brown
-            "68462E", 
+            "68462E",
             // crims
-            "5E262F", 
+            "5E262F",
             // dirty
-            "74450B", 
+            "74450B",
             // red
             "AC3413"
         ],
         #skin: [
             // white
-            "FAEDD7", 
+            "FAEDD7",
             // black
-            "744C3B", 
+            "744C3B",
             // brown
-            "C49A73", 
+            "C49A73",
             // pacific
-            "E3CBA0", 
+            "E3CBA0",
             // pink
             "F7E2C0"
         ],
@@ -138,11 +138,11 @@
             // Red
             "5C0C0C"
         ]
-    ], 
-    
+    ],
+
     // Girl avatar customizations
     #ava2cust: [
-        #base: "girl:ROOT-skeleton", 
+        #base: "girl:ROOT-skeleton",
 
         // what the fuck
         // 1: girl:skinface_lambert_1
@@ -153,28 +153,28 @@
         // 6: girl:shoes_lambert_1
         // 7: girl:shoes_lambert_1
 
-        
-        #kc: 2, 
-        #fc: 1, 
-        #sc: 6, 
+
+        #kc: 2,
+        #fc: 1,
+        #sc: 6,
         #h: [
-            "girl:ROOT_hair_ponytail-skeleton", 
-            "girl:ROOT_hair_pigtails-skeleton", 
-            "girl:ROOT_hair_straightShag-skeleton", 
-            "girl:ROOT_hair_straightLong-skeleton", 
-            "girl:ROOT_hair_wavyLong-skeleton", 
+            "girl:ROOT_hair_ponytail-skeleton",
+            "girl:ROOT_hair_pigtails-skeleton",
+            "girl:ROOT_hair_straightShag-skeleton",
+            "girl:ROOT_hair_straightLong-skeleton",
+            "girl:ROOT_hair_wavyLong-skeleton",
             "girl:ROOT_hair_afro-skeleton"
-        ], 
+        ],
         #t: [
-            "girl:ROOT_shirt_t-skeleton", 
+            "girl:ROOT_shirt_t-skeleton",
             "girl:ROOT_shirt_summer-skeleton"
-        ], 
+        ],
         #b: [
-            "girl:ROOT_pants-skeleton", 
+            "girl:ROOT_pants-skeleton",
             "girl:ROOT_shorts-skeleton"
-        ], 
+        ],
         #p: [
-            "girl:ROOT_shoulderbag-skeleton", 
+            "girl:ROOT_shoulderbag-skeleton",
             "girl:ROOT_backpack-skeleton"
         ],
         // hair style count is manually specified unlike the others
@@ -182,27 +182,27 @@
         #hstyle: 6,
         #hair: [
             // black
-            "101010", 
+            "101010",
             // blonde
-            "AD8850", 
+            "AD8850",
             // brown
-            "68462E", 
+            "68462E",
             // crims
-            "5E262F", 
+            "5E262F",
             // dirty
-            "74450B", 
+            "74450B",
             // red
             "AC3413"
         ],
         #skin: [
             // white
-            "FAEDD7", 
+            "FAEDD7",
             // black
-            "744C3B", 
+            "744C3B",
             // brown
-            "C49A73", 
+            "C49A73",
             // pacific
-            "E3CBA0", 
+            "E3CBA0",
             // pink
             "F7E2C0"
         ],
@@ -256,126 +256,315 @@
             "FEFEFE"
         ]
 
-    ], 
+    ],
     #veh: [
+        // sr - SRC - source model
+        // ml - MODLIST - model list
+        // al - ANIMLIST - animation list
+        // ax - ANIMXTRA
+        // fb - FBOUND
+        // sb - SBOUND
+        // bb - BOUNDB - bounding box
+        // aa - AVAT - the animation that plays (e.g. "idle")
+        // sp - SPEED
+        // rv - REVERSE
+        // ag - AGILITY
+        // or - ORIENT
+        // ss - SLIPSPD
+        // in - INERT
+        // bc - BOUNCE
+        // gv - GRAVITY
+        // tb - TURBO - speed when shift is pressed
+        // bh - BEHAV - if behavior is less than 10, you can't rotate in place
+        // sw - SWAY
+        // yw - YAW
+        // pi - PITCH
+        // cs - COST
+        // at - ALTITUDE
+        // tr - TRADE
+
         #foot: [
-            // SRC
-            #sr: 1, 
-
-            // MODLIST
-            #ml: 1, 
-
-            // ANIMLIST
-            #al: 1, 
-
-            // ANIMXTRA
-            #ax: 1, 
-
-            // FBOUND
-            #fb: 1, 
-
-            //SBOUND
-            #sb: 1, 
-
-            // BOUNDB
-            #bb: 1, 
-
-            // AVAT
-            // The animation that plays 
-            //#aa: "idle",
-
-            // SPEED 
-            #sp: 5.0, 
-
-            // REVERSE
-            #rv: 1, 
-
-            // AGILITY
-            #ag: 1, 
-
-            // ORIENT
-            #or: 12, 
-
-            // SLIPSPD
-            #ss: 1, 
-
-            // INERT
-            #in: 1, 
-
-            // BOUNCE
-            #bc: 1, 
-
-            // GRAVITY
+            #sr: void,
+            #ml: [],
+            #al: [],
+            #ax: [],
+            #fb: void,
+            #sb: 1,
+            #bb: void,
+            #aa: void,
+            #sp: 5.0,
+            #rv: 1,
+            #ag: 1,
+            #or: 12,
+            #ss: 1,
+            #in: 1,
+            #bc: 1,
             #gv: -0.3,
-
-            // TURBO 
-            #tb: 1,
-
-            // BEHAV 
-            #bh: 1, 
-
-            // SWAY
+            #tb: 2.0,
+            #bh: 10,
             #sw: 1,
-
-            // YAW 
-            #yw: 1, 
-
-            // PITCH
-            #pi: 1, 
-
-            // COST
+            #yw: 1,
+            #pi: 1,
             #cs: 1,
+            #at: 1,
+            #tr: 1
+        ],
 
-            // ALTITUDE 
-            #at: 1, 
+        #jski: [
+            #sr: "vehjski.w3d",
+            #ml: [
+                "persp",
+		        "top",
+		        "front",
+		        "side",
+		        "scene",
+		        "jetski_GOD",
+		        "jetski_GODShape",
+		        "jetski_GEO",
+		        "BODY_ANIM",
+		        "main",
+		        "engine",
+		        "jetski_BOX",
+		        "jetski_BOXShape",
+		        "STEERING_ANGLE",
+		        "STEERING_PIVOT",
+		        "steering",
+		        "jetski_GEO_parentConstraint1"
+            ],
+            #al: [],
+            #ax: [],
+            #fb: 1,
+            #sb: 1,
+            #bb: "jetski_BOX",
+            #aa: void,
+            #sp: 5.0,
+            #rv: 1,
+            #ag: 1,
+            #or: 12,
+            #ss: 1,
+            #in: 1,
+            #bc: 1,
+            #gv: -0.3,
+            #tb: 1,
+            #bh: 1,
+            #sw: 1,
+            #yw: 1,
+            #pi: 1,
+            #cs: 1,
+            #at: 1,
+            #tr: 1
+        ],
 
-            // TRADE
+        #atv: [
+            #sr: "vehatv.w3d",
+            #ml: [
+		        "persp",
+		        "top",
+		        "front",
+		        "side",
+		        "atv_GOD",
+		        "atv_GODShape",
+		        "atv_GEO",
+		        "BODY_ANIM",
+		        "atv_BOX",
+		        "atv_BOXShape",
+		        "body",
+		        "engine",
+		        "STEERING_ANGLE",
+		        "STEERING_PIVOT",
+		        "steering",
+		        "WHEELS",
+		        "wheel_FR",
+		        "wheel_BR",
+		        "wheel_FL",
+		        "wheel_BL",
+		        "ATV_GEO_parentConstraint1"
+            ],
+            #al: [],
+            #ax: [],
+            #fb: 1,
+            #sb: 1,
+            #bb: "atv_BOX",
+            #aa: void,
+            #sp: 5.0,
+            #rv: 1,
+            #ag: 1,
+            #or: 12,
+            #ss: 1,
+            #in: 1,
+            #bc: 1,
+            #gv: -0.3,
+            #tb: 1,
+            #bh: 1,
+            #sw: 1,
+            #yw: 1,
+            #pi: 1,
+            #cs: 1,
+            #at: 1,
+            #tr: 1
+        ],
+
+        #bike: [
+            #sr: "vehbike.w3d",
+            #ml: [
+		        "bike_GOD",
+		        "bike_GODShape",
+		        "bike_GEO",
+		        "BODY",
+		        "HANDLEBAR_ANGLE",
+		        "HANDLEBAR_TURN",
+		        "forks",
+		        "wheel_F",
+		        "ENGINE",
+		        "vent1",
+		        "vent2",
+		        "main",
+		        "PIPE_L",
+		        "PIPE_L|fitting1",
+		        "PIPE_L|hose",
+		        "PIPE_L|fitting2",
+		        "PIPE_R",
+		        "PIPE_R|fitting1",
+		        "PIPE_R|hose",
+		        "PIPE_R|fitting2",
+		        "guard",
+		        "tank",
+		        "seat",
+		        "wheel_B",
+		        "axle_R",
+		        "frame",
+		        "footrest",
+		        "chainHousing",
+		        "neck",
+		        "exhaust4",
+		        "exhaust5",
+		        "bike_GEO_parentConstraint1",
+		        "persp"
+            ],
+            #al: [],
+            #ax: [],
+            #fb: 1,
+            #sb: 1,
+            #bb: "BODY",
+            #aa: void,
+            #sp: 5.0,
+            #rv: 1,
+            #ag: 1,
+            #or: 12,
+            #ss: 1,
+            #in: 1,
+            #bc: 1,
+            #gv: -0.3,
+            #tb: 1,
+            #bh: 1,
+            #sw: 1,
+            #yw: 1,
+            #pi: 1,
+            #cs: 1,
+            #at: 1,
+            #tr: 1
+        ],
+
+        #luge: [
+            #sr: "vehluge.w3d",
+            #ml: [
+		        "turboLuge_GOD",
+		        "turboLuge_GODShape",
+		        "turboLuge_GEO",
+		        "BODY",
+		        "ENGINE",
+		        "base",
+		        "vent2",
+		        "vent1",
+		        "PIPE_L",
+		        "PIPE_L|Level2Checkpoint1c_Bike_001_fitting1",
+		        "PIPE_L|Level2Checkpoint1c_Bike_001_hose",
+		        "PIPE_L|Level2Checkpoint1c_Bike_001_fitting2",
+		        "turbine_L",
+		        "wing_L",
+		        "PIPE_R",
+		        "PIPE_R|Level2Checkpoint1c_Bike_001_fitting1",
+		        "PIPE_R|Level2Checkpoint1c_Bike_001_hose",
+		        "PIPE_R|Level2Checkpoint1c_Bike_001_fitting2",
+		        "turbine_R",
+		        "wing_R",
+		        "seat",
+		        "handlebars",
+		        "backrest",
+		        "spine",
+		        "nose",
+		        "bumpers",
+		        "WHEELS",
+		        "FR",
+		        "FL",
+		        "BL",
+		        "BR",
+		        "axle_F",
+		        "axle_B",
+		        "turboLuge_GEO_parentConstraint1",
+		        "persp"
+            ],
+            #al: [],
+            #ax: [],
+            #fb: 1,
+            #sb: 1,
+            #bb: "BODY",
+            #aa: void,
+            #sp: 5.0,
+            #rv: 1,
+            #ag: 1,
+            #or: 12,
+            #ss: 1,
+            #in: 1,
+            #bc: 1,
+            #gv: -0.3,
+            #tb: 1,
+            #bh: 1,
+            #sw: 1,
+            #yw: 1,
+            #pi: 1,
+            #cs: 1,
+            #at: 1,
             #tr: 1
         ]
     ],
     #views: [
         // Controls where the camera is
         vector(
-            0, 
-            45, 
+            0,
+            45,
             -180
         ),
         vector(
-            0, 
-            45, 
+            0,
+            45,
             -180
         )
     ],
 
     // idle, walk, run, jump, seat
     // List of 4 elements L (looped), S (startTime), E (endTime), R (scale)
-    //#animidle: [
-    //    1,
-    //    100, 
-    //    8000,
-    //    0.5
-    //],
     #animidle: [
         1,
-        100, 
+        100,
         8000,
         0.5
     ],
     #animwalk: [
         1,
-        8400, 
+        8400,
         9620,
         1.0
     ],
     #animrun: [
         1,
-        12535, 
+        12535,
         13125,
         0.75
     ],
     #animjump: [
         0,
-        16700, 
+        16700,
         17200,
         0.75
     ],
