@@ -58,7 +58,28 @@
     #level2area1: [
         #en: ["L2 A1"]
     ],
-    #lkill: {
+    #lkill: [
         #en: ["Your connection has ended."]
-    }
+    ],
+    #maps: [
+        // scale and orig have not yet been correctly calibrated
+        W01L01: [
+            #img: "W01L01_map.jpg",
+            #scaleX: 5.0,
+            #scaleY: 5.0,
+            #origX: 0,
+            #origY: 0,
+            #width: 700,
+            #height: 700
+        ],
+        W01L02: [
+            #img: "W01L02_map.jpg",
+            #scaleX: 5.0,
+            #scaleY: 5.0,
+            #origX: 0,
+            #origY: 0,
+            #width: 700,
+            #height: 1100
+        ]
+    ]
 ]
