@@ -44,8 +44,18 @@ pub fn handle_us(server: &mut Server, connection_id: ConnectionID, _packet: &CSP
     props.add_element("ppnew", PropValue::Integer(0));
     props.add_element("gt", PropValue::Integer(0));
     props.add_element("ga", PropValue::Integer(0));
-    props.add_element("hs", PropValue::List(vec![]));
 
+    // plHighScores
+    let mut highscore_proplist = Proplist::new();
+    highscore_proplist.add_element("L01A03Z02", PropValue::String("1 1 1".to_string()));
+    highscore_proplist.add_element("L01A02Z02", PropValue::String("2 2 2".to_string()));
+    highscore_proplist.add_element("L01A05Z02", PropValue::String("3 3 3".to_string()));
+    highscore_proplist.add_element("L01A05Z03", PropValue::String("4 4 4".to_string()));
+    highscore_proplist.add_element("L02A02Z03", PropValue::String("5 5 5".to_string()));
+    highscore_proplist.add_element("L02A02Z02", PropValue::String("6 6 6".to_string()));
+    highscore_proplist.add_element("L02A04Z02", PropValue::String("7 7 7".to_string()));
+    highscore_proplist.add_element("L02A04Z03", PropValue::String("8 8 8".to_string()));
+    props.add_element("hs", PropValue::Proplist(highscore_proplist));
     let resp = format!("U {}", props);
     println!("US response: {resp}");
 
