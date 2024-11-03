@@ -33,7 +33,18 @@ pub fn handle_mu(server: &mut Server, connection_id: ConnectionID, data: &Mu) {
     }
 
     if let Some(animation_rate) = movement_prop_list.get_number("ar") {
-        player.animation_rate = animation_rate as f32;
+        player.animation_rate = animation_rate;
+    }
+
+    let vehicle_anim = movement_prop_list.get_number("va");
+    let vehicle_type = movement_prop_list.get_string("vt").map(|s| s.to_owned());
+
+    if vehicle_anim.is_some() && vehicle_type.is_some() {
+        player.vehicle_anim = vehicle_anim;
+        player.vehicle_type = vehicle_type;
+    } else {
+        player.vehicle_anim = None;
+        player.vehicle_type = None;
     }
 
     // println!("MU Movement packet received: {movement_prop_list:?}");
@@ -58,6 +69,14 @@ fn inform_all_avatars(server: &mut Server, connection_id: ConnectionID) {
         movement_proplist.add_element("gs", PropValue::Integer(1));
         movement_proplist.add_element("ar", PropValue::Float(player.animation_rate.into()));
         movement_proplist.add_element("as", PropValue::String(player.animation_state.clone()));
+
+        if let Some(vehicle_anim) = player.vehicle_anim {
+            movement_proplist.add_element("va", PropValue::Float(vehicle_anim));
+        }
+        if let Some(vehicle_type) = &player.vehicle_type {
+            movement_proplist.add_element("vt", PropValue::String(vehicle_type.clone()));
+        }
+
         movement_list.push(PropValue::Proplist(movement_proplist));
     }
     let movement_propvaluelist = PropValue::List(movement_list);

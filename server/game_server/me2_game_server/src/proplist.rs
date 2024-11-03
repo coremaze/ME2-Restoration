@@ -4,7 +4,7 @@ use std::str::FromStr;
 #[derive(Debug, PartialEq)]
 pub enum PropValue {
     Integer(i64),
-    Float(f64),
+    Float(f32),
     Vector((f32, f32, f32)),
     String(String),
     List(Vec<PropValue>),
@@ -120,7 +120,7 @@ impl Proplist {
     }
 
     /// Retrieves a float by its key.
-    pub fn get_float(&self, key: &str) -> Option<f64> {
+    pub fn get_float(&self, key: &str) -> Option<f32> {
         match self.get_element(key) {
             Some(PropValue::Float(f)) => Some(*f),
             _ => None,
@@ -160,9 +160,9 @@ impl Proplist {
     }
 
     /// Retrieves an integer or float value by its key.
-    pub fn get_number(&self, key: &str) -> Option<f64> {
+    pub fn get_number(&self, key: &str) -> Option<f32> {
         match self.get_element(key) {
-            Some(PropValue::Integer(i)) => Some(*i as f64),
+            Some(PropValue::Integer(i)) => Some(*i as f32),
             Some(PropValue::Float(f)) => Some(*f),
             _ => None,
         }
@@ -218,8 +218,8 @@ impl FromStr for PropValue {
             let inner = s.get(7..s_end).ok_or("Invalid vector format")?;
             let nums = inner
                 .split(',')
-                .map(|num| num.trim().parse::<f64>().map_err(|e| e.to_string()))
-                .collect::<Result<Vec<f64>, String>>()?;
+                .map(|num| num.trim().parse::<f32>().map_err(|e| e.to_string()))
+                .collect::<Result<Vec<f32>, String>>()?;
             if nums.len() != 3 {
                 return Err("Vector must have exactly three components".to_string());
             }
@@ -233,7 +233,7 @@ impl FromStr for PropValue {
             Ok(PropValue::String(inner.to_string()))
         } else if let Ok(i) = s.parse::<i64>() {
             Ok(PropValue::Integer(i))
-        } else if let Ok(f) = s.parse::<f64>() {
+        } else if let Ok(f) = s.parse::<f32>() {
             Ok(PropValue::Float(f))
         } else if s.starts_with('[') && s.ends_with(']') {
             let inner = s.get(1..s_end).ok_or("Invalid list format")?;

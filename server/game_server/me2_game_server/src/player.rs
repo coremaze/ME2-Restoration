@@ -12,6 +12,8 @@ pub struct Player {
     pub rotation: (f32, f32, f32),
     pub animation_state: String,
     pub animation_rate: f32,
+    pub vehicle_anim: Option<f32>,
+    pub vehicle_type: Option<String>,
 }
 
 impl Player {
@@ -29,6 +31,8 @@ impl Player {
             rotation: (0.0, 0.0, 0.0),
             animation_state: String::from("Idle"),
             animation_rate: 1.0,
+            vehicle_anim: None,
+            vehicle_type: None,
         }
     }
 }
